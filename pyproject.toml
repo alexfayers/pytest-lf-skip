@@ -1,0 +1,30 @@
+[project]
+name = "pytest-lf-skip"
+version = "0.1.0"
+description = "A pytest plugin which makes --last-failed skip instead of deselect tests."
+readme = "README.md"
+authors = [
+    { name = "Alex Fayers", email = "alex@fayers.com" }
+]
+requires-python = ">=3.12"
+classifiers = [
+    "Framework :: Pytest",
+]
+dependencies = [
+    "pytest>=8.3.5",
+]
+
+[project.entry-points.pytest11]
+pytest_lf_skip = "pytest_lf_skip.plugin"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+test = [
+    "pytest>=8.3.5",
+]
+
+[tool.uv]
+default-groups = ["test"]

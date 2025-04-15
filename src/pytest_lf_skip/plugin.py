@@ -1,0 +1,29 @@
+import pytest
+from _pytest.cacheprovider import LFPlugin
+
+from pytest_lf_skip.constants import Constants
+from pytest_lf_skip.lf_skip import LFSkipPlugin
+
+
+def pytest_addoption(
+    parser: pytest.Parser,
+    pluginmanager: pytest.PytestPluginManager,  # noqa: ARG001
+) -> None:
+    """Add the lf-skip args to pytest."""
+    parser.addoption(
+        *Constants.lf_skip_parser_options,
+        action="store_true",
+        default=False,
+        help="If --last-failed is enabled, skip tests that have been passed in the last run instead of deselecting them",
+    )
+
+
+@pytest.hookimpl
+def pytest_plugin_registered(
+    plugin: object,
+    manager: pytest.PytestPluginManager,
+) -> None:
+    """Register the LFSkipPlugin if the LFPlugin is registered."""
+    if isinstance(plugin, LFPlugin) and not isinstance(plugin, LFSkipPlugin):
+        # add the override hook
+        manager.register(LFSkipPlugin(plugin.config), Constants.lf_skip_plugin_name)
