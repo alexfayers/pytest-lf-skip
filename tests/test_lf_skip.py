@@ -12,7 +12,7 @@ from tests._constants import (
 from tests._types import ExpectedResult, LineSearch, Outcome
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
 
 @pytest.mark.parametrize(
@@ -107,7 +107,7 @@ def test_lf(
     factory_test_plugin: Callable[..., None],
     run_args: list[str],
     expected_results: list[ExpectedResult],
-):
+) -> None:
     factory_test_plugin(
         run_args,
         expected_results,
@@ -198,7 +198,7 @@ def test_lfnf_none(
     factory_test_plugin: Callable[..., None],
     run_args: list[str],
     expected_results: list[ExpectedResult],
-):
+) -> None:
     factory_test_plugin(
         run_args,
         expected_results,

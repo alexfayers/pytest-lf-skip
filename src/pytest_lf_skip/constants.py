@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Constants:
     lf_plugin_name = "lfplugin"
     lf_collwrapper_plugin_name = "lfplugin-collwrapper"

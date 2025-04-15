@@ -1,5 +1,7 @@
-import pytest
+from __future__ import annotations
+
 from _pytest.cacheprovider import LFPlugin
+import pytest
 
 from pytest_lf_skip.constants import Constants
 from pytest_lf_skip.lf_skip import LFSkipPlugin
@@ -14,7 +16,9 @@ def pytest_addoption(
         *Constants.lf_skip_parser_options,
         action="store_true",
         default=False,
-        help="If --last-failed is enabled, skip tests that have been passed in the last run instead of deselecting them",
+        help=(
+            "If --last-failed is enabled, skip tests that have been passed in the last run instead of deselecting them"
+        ),
     )
 
 

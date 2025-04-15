@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import pytest
 from _pytest.cacheprovider import LFPlugin
+import pytest
 
 from .constants import Config, Constants
 
@@ -23,15 +23,13 @@ class LFSkipPlugin(LFPlugin):
             should_be_active = False
 
         # check if lfplugin is registered, if not, do nothing
-        if should_be_active and (
-            parent := config.pluginmanager.get_plugin(name=Constants.lf_plugin_name)
-        ):
+        if should_be_active and (parent := config.pluginmanager.get_plugin(name=Constants.lf_plugin_name)):
             self._parent = parent
         else:
             should_be_active = False
 
         # save the current state of the lf options
-        lf_attr = config._opt2dest.get("lf", "lf")
+        lf_attr = config._opt2dest.get("lf", "lf")  # noqa: SLF001
         existing_lf_value = config.getoption("lf")
 
         if not existing_lf_value:
@@ -86,7 +84,7 @@ class LFSkipPlugin(LFPlugin):
         # Let the parent's pytest_collection_modifyitems execute
         res = yield
 
-        # reenable the pytest_deselected hook
+        # re-enable the pytest_deselected hook
         self._parent.config.hook.pytest_deselected = original_deselect_hook  # type: ignore[attr-defined]
 
         # add the previously removed tests back

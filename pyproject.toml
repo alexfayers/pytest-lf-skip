@@ -1,30 +1,83 @@
+[build-system]
+build-backend = "hatchling.build"
+
+requires = [ "hatchling" ]
+
 [project]
 name = "pytest-lf-skip"
 version = "0.1.0"
 description = "A pytest plugin which makes --last-failed skip instead of deselect tests."
 readme = "README.md"
-authors = [
-    { name = "Alex Fayers", email = "alex@fayers.com" }
-]
-requires-python = ">=3.12"
+authors = [ { name = "Alex Fayers", email = "alex@fayers.com" } ]
+requires-python = ">=3.10"
 classifiers = [
     "Framework :: Pytest",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
-dependencies = [
-    "pytest>=8.3.5",
-]
+dependencies = [ "pytest>=8.3.5" ]
 
-[project.entry-points.pytest11]
-pytest_lf_skip = "pytest_lf_skip.plugin"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+entry-points.pytest11.pytest_lf_skip = "pytest_lf_skip.plugin"
 
 [dependency-groups]
-test = [
-    "pytest>=8.3.5",
+dev = [ "mypy>=1.15", "pre-commit>=4.2", "pytest>=8.3.5", "ruff>=0.11.5" ]
+
+[tool.ruff]
+line-length = 120
+
+lint.select = [ "ALL" ]
+lint.extend-ignore = [
+    "D100",  # pydocstyle: Missing docstring in public module
+    "D101",  # pydocstyle: Missing docstring in public class
+    "D104",  # pydocstyle: Missing docstring in public package
+    "D105",  # pydocstyle: Missing docstring in magic method
+    "D107",  # pydocstyle: Missing docstring in `__init__`
+    "FIX",   # flake8-fixme
+    "TD002", # flake8-todos: Missing author in TODO
+    "TD003", # flake8-todos: Missing issue link for this TODO
 ]
 
-[tool.uv]
-default-groups = ["test"]
+lint.extend-per-file-ignores."tests/*" = [
+    "D103", # pydocstyle: Missing docstring in public function
+    "S101", # flake8-bandit: Use of `assert` detected
+]
+
+lint.flake8-annotations.allow-star-arg-any = true
+
+lint.isort.combine-as-imports = true
+lint.isort.force-sort-within-sections = true
+lint.isort.required-imports = [ "from __future__ import annotations" ]
+
+lint.pydocstyle.convention = "google"
+lint.pydocstyle.ignore-var-parameters = true
+
+[tool.codespell]
+write-changes = true
+
+[tool.pyproject-fmt]
+indent = 4
+max_supported_python = "3.13"
+
+[tool.pytest.ini_options]
+testpaths = [ "tests" ]
+python_files = "test_*.py"
+
+[tool.mypy]
+files = [ "src", "tests" ]
+python_version = "3.10"
+
+warn_unused_configs = true
+disallow_any_generics = true
+disallow_any_unimported = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
+no_implicit_reexport = true
+strict_equality = true

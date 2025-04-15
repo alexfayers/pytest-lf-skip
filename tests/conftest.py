@@ -1,20 +1,26 @@
-import logging
-from collections.abc import Iterable
+from __future__ import annotations
+
 from dataclasses import asdict
-from pathlib import Path
-from typing import Callable
+import logging
+from typing import TYPE_CHECKING
 
 import pytest
 
 from ._helper import replace_file_text
-from ._types import ExpectedResult
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable
+    from pathlib import Path
+
+    from ._types import ExpectedResult
 
 pytest_plugins = "pytester"
+
 logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def example_test_file(pytester: pytest.Pytester):
+def example_test_file(pytester: pytest.Pytester) -> Path:
     return pytester.makepyfile(
         """
         def test_will_pass():
@@ -36,7 +42,7 @@ def factory_test_plugin(
     def _test_plugin(
         run_args: Iterable[str],
         expected_results: Iterable[ExpectedResult],
-    ):
+    ) -> None:
         runtime_args: Iterable[str | Path] = (*run_args, example_test_file)
 
         for index, expected_result in enumerate(expected_results):
@@ -69,8 +75,6 @@ def factory_test_plugin(
                     for line in res.outlines:
                         if line_search.search in line:
                             match_count += 1
-                    assert (
-                        match_count
-                    ), f"[{index}] '{line_search.search}' didn't appear {line_search.count} times"
+                    assert match_count, f"[{index}] '{line_search.search}' didn't appear {line_search.count} times"
 
     return _test_plugin

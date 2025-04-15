@@ -1,0 +1,57 @@
+default_install_hook_types:
+  - pre-commit
+  - post-checkout
+  - post-merge
+  - post-rewrite
+
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-merge-conflict
+  - id: mixed-line-ending
+    args: [--fix=lf]
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.11.4
+  hooks:
+    - id: ruff
+      args: [--fix]
+    - id: ruff-format
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+    -   id: mypy
+        files: ^(src/|tests/)
+        additional_dependencies: 
+          - pytest
+
+- repo: https://github.com/astral-sh/uv-pre-commit
+  rev: 0.6.13
+  hooks:
+    - id: uv-sync
+    - id: uv-lock
+    - id: uv-export
+
+- repo: https://github.com/tox-dev/pyproject-fmt
+  rev: "v2.5.1"
+  hooks:
+    - id: pyproject-fmt
+      # https://pyproject-fmt.readthedocs.io/en/latest/#calculating-max-supported-python-version
+      additional_dependencies: ["tox>=4.9"]
+
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.4.1
+  hooks:
+  - id: codespell
+    args: ["--toml=pyproject.toml"]
+    additional_dependencies:
+      - tomli
+
+-   repo: https://github.com/pre-commit/sync-pre-commit-deps
+    rev: v0.0.3
+    hooks:
+    -   id: sync-pre-commit-deps
