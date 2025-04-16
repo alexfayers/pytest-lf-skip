@@ -6,12 +6,16 @@ import pytest
 from pytest_lf_skip.constants import Constants
 from pytest_lf_skip.lf_skip import LFSkipPlugin
 
+from .hooks import argparse_parse_hook
+
 
 def pytest_addoption(
     parser: pytest.Parser,
     pluginmanager: pytest.PytestPluginManager,  # noqa: ARG001
 ) -> None:
     """Add the lf-skip args to pytest."""
+    parser.parse = argparse_parse_hook(parser.parse)  # type: ignore[method-assign, assignment]
+
     parser.addoption(
         *Constants.lf_skip_parser_options,
         action="store_true",
@@ -19,6 +23,13 @@ def pytest_addoption(
         help=(
             "If --last-failed is enabled, skip tests that have been passed in the last run instead of deselecting them"
         ),
+    )
+
+    parser.addoption(
+        *Constants.lf_skip_vscode_options,
+        action="store_true",
+        default=False,
+        help="Automatically enable --lf and --lf-skip when pytest is called from vscode.",
     )
 
 

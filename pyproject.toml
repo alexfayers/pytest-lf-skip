@@ -23,7 +23,13 @@ dependencies = [ "pytest>=8.3.5" ]
 entry-points.pytest11.pytest_lf_skip = "pytest_lf_skip.plugin"
 
 [dependency-groups]
-dev = [ "mypy>=1.15", "pre-commit>=4.2", "pytest>=8.3.5", "ruff>=0.11.5" ]
+dev = [
+    "mypy>=1.15",
+    "pre-commit>=4.2",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff>=0.11.5",
+]
 
 [tool.ruff]
 line-length = 120
@@ -64,6 +70,11 @@ max_supported_python = "3.13"
 [tool.pytest.ini_options]
 testpaths = [ "tests" ]
 python_files = "test_*.py"
+
+[tool.coverage]
+report.skip_empty = true
+run.branch = true
+run.source = [ "src" ]
 
 [tool.mypy]
 files = [ "src", "tests" ]

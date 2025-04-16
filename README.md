@@ -19,3 +19,17 @@ Then add the `--lf-skip` or `--last-failed-skip` argument to your pytest command
 ```bash
 pytest --last-failed --last-failed-skip
 ```
+
+### VS Code
+
+If you are using VS Code, you can make use of the `--auto-last-failed-skip-vscode` argument, which will automatically enable `--lf` and `--lf-skip` when running tests from the VS Code test explorer.
+
+To enable this, add the following to your `settings.json`:
+
+```json
+{
+    "python.testing.pytestArgs": [
+        "--auto-last-failed-skip-vscode",
+    ]
+}
+```

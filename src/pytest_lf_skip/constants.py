@@ -11,6 +11,11 @@ class Constants:
         "--lf-skip",
     )
 
+    lf_skip_vscode_options = (
+        "--auto-last-failed-skip-vscode",
+        "--auto-lf-skip-vscode",
+    )
+
 
 class Config:
     skip_reason = "previously passed"

@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+        "-p",
+        "pytest_lf_skip",
+        "--auto-lf-skip-vscode",
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
