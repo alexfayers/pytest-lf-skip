@@ -1,6 +1,6 @@
 # pytest-lf-skip
 
-A pytest plugin which makes --last-failed skip instead of deselect tests.
+A pytest plugin which makes `--last-failed` skip instead of deselect tests.
 
 ## Installation
 
