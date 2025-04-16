@@ -36,14 +36,16 @@ line-length = 120
 
 lint.select = [ "ALL" ]
 lint.extend-ignore = [
-    "D100",  # pydocstyle: Missing docstring in public module
-    "D101",  # pydocstyle: Missing docstring in public class
-    "D104",  # pydocstyle: Missing docstring in public package
-    "D105",  # pydocstyle: Missing docstring in magic method
-    "D107",  # pydocstyle: Missing docstring in `__init__`
-    "FIX",   # flake8-fixme
-    "TD002", # flake8-todos: Missing author in TODO
-    "TD003", # flake8-todos: Missing issue link for this TODO
+    "D100",    # pydocstyle: Missing docstring in public module
+    "D101",    # pydocstyle: Missing docstring in public class
+    "D104",    # pydocstyle: Missing docstring in public package
+    "D105",    # pydocstyle: Missing docstring in magic method
+    "D107",    # pydocstyle: Missing docstring in `__init__`
+    "FIX",     # flake8-fixme
+    "PLC0414", # Pylint: Import alias does not rename original package
+    "TD002",   # flake8-todos: Missing author in TODO
+    "TD003",   # flake8-todos: Missing issue link for this TODO
+    "UP040",   # pyupgrade: Type alias uses `TypeAlias` annotation instead of the `type` keyword
 ]
 
 lint.extend-per-file-ignores."tests/*" = [
@@ -51,10 +53,19 @@ lint.extend-per-file-ignores."tests/*" = [
     "S101", # flake8-bandit: Use of `assert` detected
 ]
 
+lint.extend-safe-fixes = [
+    "ANN",   # flake8-annotations
+    "TC001", # flake8-type-checking: Move application import into a type-checking block
+    "TC002", # flake8-type-checking: Move third-party import into a type-checking block
+    "TC003", # flake8-type-checking: Move standard library import into a type-checking block
+    "TC004", # flake8-type-checking: Move import out of type-checking block. Import is used for more than type hinting.
+]
+
 lint.flake8-annotations.allow-star-arg-any = true
 
 lint.isort.combine-as-imports = true
 lint.isort.force-sort-within-sections = true
+lint.isort.force-wrap-aliases = true
 lint.isort.required-imports = [ "from __future__ import annotations" ]
 
 lint.pydocstyle.convention = "google"
