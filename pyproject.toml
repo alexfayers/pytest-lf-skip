@@ -151,6 +151,9 @@ no_git_verify = true                                                            
 [tool.semantic_release.branches.main]
 match = "(main|master)"
 
+[tool.semantic_release.commit_parser_options]
+parse_squash_commits = true
+
 [tool.semantic_release.remote]
 name = "origin"
 type = "github"
