@@ -3,6 +3,7 @@ default_install_hook_types:
   - post-checkout
   - post-merge
   - post-rewrite
+  - commit-msg
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -23,3 +24,10 @@ repos:
       - id: uv-sync
       - id: uv-lock
       - id: uv-export
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
