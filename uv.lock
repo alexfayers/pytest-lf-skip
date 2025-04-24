@@ -239,7 +239,6 @@ dev = [
     { name = "pyproject-fmt" },
     { name = "pytest" },
     { name = "pytest-cov" },
-    { name = "pytest-lf-skip" },
     { name = "pytest-mock" },
     { name = "ruff" },
 ]
@@ -253,7 +252,6 @@ lint = [
 test = [
     { name = "pytest" },
     { name = "pytest-cov" },
-    { name = "pytest-lf-skip" },
     { name = "pytest-mock" },
 ]
 typecheck = [
@@ -270,7 +268,6 @@ dev = [
     { name = "pyproject-fmt", specifier = ">=2.5.1" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
-    { name = "pytest-lf-skip", specifier = ">=0.1.1" },
     { name = "pytest-mock", specifier = ">=3.14" },
     { name = "ruff", specifier = ">=0.11.5" },
 ]
@@ -282,7 +279,6 @@ lint = [
 test = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
-    { name = "pytest-lf-skip", specifier = ">=0.1.1" },
     { name = "pytest-mock", specifier = ">=3.14" },
 ]
 typecheck = [{ name = "mypy", specifier = ">=1.15" }]
