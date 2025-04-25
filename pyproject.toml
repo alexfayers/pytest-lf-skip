@@ -141,7 +141,7 @@ ignore_missing_imports = false
 
 [tool.semantic_release]
 version_toml = [ "pyproject.toml:project.version" ]
-version_variables = [ "src/semantic_release/__init__.py:__version__" ]
+version_variables = [ "src/pytest_lf_skip/__init__.py:__version__" ]
 
 assets = [  ]
 build_command = "uv build"
