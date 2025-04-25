@@ -172,6 +172,34 @@ jobs:
           name: python-coverage-comment-action
           path: python-coverage-comment-action.txt
 
+  build:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' && needs.test.result == 'success'
+
+    env:
+      DEPS: yes
+      UV_PYTHON_PREFERENCE: only-managed
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      - uses: extractions/setup-just@v3
+
+      - name: Build the package
+        run: just build
+
+      - name: Store build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 30
+
   # https://github.com/marketplace/actions/alls-green
   check:  # This job does nothing and is only used for the branch protection
     if: always()
@@ -183,6 +211,7 @@ jobs:
       - lint
       - typecheck
       - test
+      - build
 
     runs-on: ubuntu-latest
 
@@ -193,33 +222,31 @@ jobs:
         with:
           jobs: ${{ toJSON(needs) }}
 
-  # release:
-  #   needs: [check]
-  #   if: needs.check.outputs.result == 'success' && startsWith(github.ref, 'refs/tags/')
-  #   runs-on: ubuntu-latest
-  #   environment: release
+  release:
+    needs: [check]
+    if: needs.check.outputs.result == 'success' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    environment: release
 
-  #   permissions:
-  #     id-token: write
+    permissions:
+      id-token: write
 
-  #   outputs:
-  #     version: ${{ steps.check-tag.outputs.VERSION }}
+    outputs:
+      version: ${{ steps.check-tag.outputs.VERSION }}
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - uses: astral-sh/setup-uv@v5
-  #       with:
-  #         python-version: "3.12"
+      - name: Check version
+        id: check-tag
+        uses: samuelcolvin/check-python-version@v4.1
+        with:
+          version_file_path: src/pytest_lf_skip/__init__.py
 
-  #     - name: Check version
-  #       id: check-tag
-  #       uses: samuelcolvin/check-python-version@v4.1
-  #       with:
-  #         version_file_path: pydantic/version.py
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
 
-  #     - name: Build the package
-  #       run: uv build
-
-  #     - name: Upload package to PyPI
-  #       uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
