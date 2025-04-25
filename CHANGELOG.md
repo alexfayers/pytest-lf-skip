@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.3 (2025-04-25)
+
+### Bug Fixes
+
+- :construction_worker: Set path on `Download build artifacts` step in release
+  ([`a9781e7`](https://github.com/alexfayers/pytest-lf-skip/commit/a9781e71215f9e9a89ad1cd66f0126e694c5a4bc))
+
+
 ## v0.2.2 (2025-04-25)
 
 ### Bug Fixes

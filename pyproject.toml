@@ -5,7 +5,7 @@ requires = [ "hatchling" ]
 
 [project]
 name = "pytest-lf-skip"
-version = "0.2.2"
+version = "0.2.3"
 description = "A pytest plugin which makes `--last-failed` skip instead of deselect tests."
 readme = "README.md"
 authors = [ { name = "Alex Fayers", email = "alex@fayers.com" } ]
