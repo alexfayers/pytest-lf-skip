@@ -163,5 +163,5 @@ name = "origin"
 type = "github"
 
 [tool.semantic_release.publish]
-dist_glob_patterns = [ "dist/*.[whl|tar.gz]" ]
+dist_glob_patterns = [ "dist/*.{whl,tar.gz}" ]
 upload_to_vcs_release = true

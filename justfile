@@ -54,3 +54,7 @@ pre-commit: _pre-commit
 build: _uv clean
     # Build the package
     uv build --sdist --wheel
+
+# Release a new version of the package
+release: _uv
+    uv run semantic-release version
