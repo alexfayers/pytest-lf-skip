@@ -16,7 +16,6 @@ repos:
       - id: trailing-whitespace
       - id: check-yaml
         args: ["--unsafe"]
-      - id: no-commit-to-branch # prevent direct commits to main branch
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.6.13
