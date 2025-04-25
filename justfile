@@ -19,7 +19,7 @@ install: _uv _pre-commit
 
 clean:
     # Remove all build artifacts
-    rm -r dist/
+    rm -rf dist/
 
 # Run all linters against the codebase
 lint: _uv
