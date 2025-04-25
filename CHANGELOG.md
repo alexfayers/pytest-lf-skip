@@ -1,6 +1,30 @@
 # CHANGELOG
 
 
+## v0.2.1 (2025-04-25)
+
+### Bug Fixes
+
+- :wrench: Fix dist_glob_patterns pattern for release artifacts
+  ([#8](https://github.com/alexfayers/pytest-lf-skip/pull/8),
+  [`fea0fae`](https://github.com/alexfayers/pytest-lf-skip/commit/fea0fae4747c926b4a3bf132507d34bed794b29b))
+
+- :wrench: Fix release CI stage not running
+  ([#8](https://github.com/alexfayers/pytest-lf-skip/pull/8),
+  [`fea0fae`](https://github.com/alexfayers/pytest-lf-skip/commit/fea0fae4747c926b4a3bf132507d34bed794b29b))
+
+### Chores
+
+- :wrench: Add just release entry ([#8](https://github.com/alexfayers/pytest-lf-skip/pull/8),
+  [`fea0fae`](https://github.com/alexfayers/pytest-lf-skip/commit/fea0fae4747c926b4a3bf132507d34bed794b29b))
+
+### Continuous Integration
+
+- :construction_worker: Add build and release steps for CI
+  ([#8](https://github.com/alexfayers/pytest-lf-skip/pull/8),
+  [`fea0fae`](https://github.com/alexfayers/pytest-lf-skip/commit/fea0fae4747c926b4a3bf132507d34bed794b29b))
+
+
 ## v0.2.0 (2025-04-25)
 
 ### Bug Fixes
