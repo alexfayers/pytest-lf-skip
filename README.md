@@ -12,13 +12,13 @@ pip install pytest-lf-skip
 
 ## Usage
 
-First, install the plugin.
-
-Then add the `--lf-skip` or `--last-failed-skip` argument to your pytest command when you use `--last-failed`:
+Just add the `--lf-skip` or `--last-failed-skip` argument to your pytest command when you use `--last-failed`:
 
 ```bash
 pytest --last-failed --last-failed-skip
 ```
+
+Now previously passed tests will be skipped instead of being deselected.
 
 ### VS Code
 
