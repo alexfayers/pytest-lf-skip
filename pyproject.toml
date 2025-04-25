@@ -20,6 +20,10 @@ classifiers = [
 ]
 dependencies = [ "pytest>=8.3.5" ]
 
+urls.Changelog = 'https://github.com/alexfayers/pytest-lf-skip/blob/main/CHANGELOG.md'
+urls.Homepage = 'https://github.com/alexfayers/pytest-lf-skip'
+urls.Source = 'https://github.com/alexfayers/pytest-lf-skip'
+
 entry-points.pytest11.pytest_lf_skip = "pytest_lf_skip.plugin"
 
 [dependency-groups]
