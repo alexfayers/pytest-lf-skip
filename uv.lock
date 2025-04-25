@@ -594,7 +594,7 @@ wheels = [
 
 [[package]]
 name = "pytest-lf-skip"
-version = "0.1.1"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "pytest" },
@@ -641,7 +641,7 @@ dev = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "pytest-mock", specifier = ">=3.14" },
-    { name = "python-semantic-release", specifier = ">=9.21.0" },
+    { name = "python-semantic-release", specifier = ">=9.21" },
     { name = "ruff", specifier = ">=0.11.5" },
 ]
 format = [{ name = "pyproject-fmt", specifier = ">=2.5.1" }]
@@ -649,7 +649,7 @@ lint = [
     { name = "codespell", specifier = ">=2.4.1" },
     { name = "ruff", specifier = ">=0.11.5" },
 ]
-release = [{ name = "python-semantic-release", specifier = ">=9.21.0" }]
+release = [{ name = "python-semantic-release", specifier = ">=9.21" }]
 test = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
