@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.2.2 (2025-04-25)
+
+### Bug Fixes
+
+- :bug: Fix clean failing if dist file doesn't exist
+  ([`cf1c0b8`](https://github.com/alexfayers/pytest-lf-skip/commit/cf1c0b8baa345eb1467d0426660f4bc5b6ac67d7))
+
+
 ## v0.2.1 (2025-04-25)
 
 ### Bug Fixes
