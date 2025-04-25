@@ -17,6 +17,10 @@ install: _uv _pre-commit
     uv sync --locked
     uv run pre-commit install --install-hooks
 
+clean:
+    # Remove all build artifacts
+    rm -r dist/
+
 # Run all linters against the codebase
 lint: _uv
     uv run ruff check
@@ -46,3 +50,7 @@ test-cov: _uv
 # Run all pre-commit hooks (this calls the `just check` target)
 pre-commit: _pre-commit
     uv run pre-commit run --all-files
+
+build: _uv clean
+    # Build the package
+    uv build --sdist --wheel
