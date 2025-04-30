@@ -1,6 +1,36 @@
 # CHANGELOG
 
 
+## v0.2.4 (2025-05-01)
+
+### Chores
+
+- :wrench: Remove post hooks from pre-commit config
+  ([#11](https://github.com/alexfayers/pytest-lf-skip/pull/11),
+  [`fb30f0d`](https://github.com/alexfayers/pytest-lf-skip/commit/fb30f0de6c17d634a45d8ff2bcc88226ea65db07))
+
+They were annoying
+
+### Continuous Integration
+
+- :construction_worker: Add codecov step to CI
+  ([#12](https://github.com/alexfayers/pytest-lf-skip/pull/12),
+  [`23b7e61`](https://github.com/alexfayers/pytest-lf-skip/commit/23b7e610f61dcaed648520578d9f8d8912508ef2))
+
+### Documentation
+
+- :memo: Add new PyPi classifiers ([#12](https://github.com/alexfayers/pytest-lf-skip/pull/12),
+  [`23b7e61`](https://github.com/alexfayers/pytest-lf-skip/commit/23b7e610f61dcaed648520578d9f8d8912508ef2))
+
+- :sparkles: Add loads of new badges to the readme!
+  ([#12](https://github.com/alexfayers/pytest-lf-skip/pull/12),
+  [`23b7e61`](https://github.com/alexfayers/pytest-lf-skip/commit/23b7e610f61dcaed648520578d9f8d8912508ef2))
+
+- Update usage instructions in README.md
+  ([#10](https://github.com/alexfayers/pytest-lf-skip/pull/10),
+  [`9a3f8dd`](https://github.com/alexfayers/pytest-lf-skip/commit/9a3f8ddf080fcabee3003be2f7bf30d07e225aa0))
+
+
 ## v0.2.3 (2025-04-25)
 
 ### Bug Fixes
