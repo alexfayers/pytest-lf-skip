@@ -15,6 +15,7 @@ check: lint type-check
 # Install the package, development dependencies and pre-commit hooks
 install: _uv _pre-commit
     uv sync --locked
+    uv run pre-commit uninstall
     uv run pre-commit install --install-hooks
 
 clean:
