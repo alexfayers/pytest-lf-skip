@@ -594,7 +594,6 @@ wheels = [
 
 [[package]]
 name = "pytest-lf-skip"
-version = "0.2.4"
 source = { editable = "." }
 dependencies = [
     { name = "pytest" },
