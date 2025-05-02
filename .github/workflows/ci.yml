@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     branches: [ main ]
-    tags: [ '**' ]
   pull_request: {}
 
 concurrency:
@@ -227,26 +226,19 @@ jobs:
           path: dist/
           retention-days: 30
 
-  release:
+  semantic-release:
     needs: [build]
-    if: needs.build.result == 'success' && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    environment: release
-
-    permissions:
-      id-token: write
-
-    outputs:
-      version: ${{ steps.check-tag.outputs.VERSION }}
+    if: github.event_name != 'pull_request' && needs.build.result == 'success'
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check version
-        id: check-tag
-        uses: samuelcolvin/check-python-version@v4.1
+      - uses: astral-sh/setup-uv@v5
         with:
-          version_file_path: src/pytest_lf_skip/__init__.py
+          python-version: "3.12"
+
+      - uses: extractions/setup-just@v3
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -254,5 +246,5 @@ jobs:
           name: build-artifacts
           path: dist/
 
-      - name: Upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Python Semantic Release
+        run: just release-no-build
