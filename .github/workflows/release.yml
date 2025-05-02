@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: dawidd6/action-download-artifact@v9
+        with:
+          workflow: ci.yml
+          workflow_conclusion: success
+          branch: main
+          event: push
+          name: build-artifacts
+          path: dist/
+
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
