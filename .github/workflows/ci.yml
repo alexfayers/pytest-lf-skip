@@ -230,6 +230,9 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' && needs.build.result == 'success'
+    permissions:
+      id-token: write
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -248,3 +251,5 @@ jobs:
 
       - name: Python Semantic Release
         run: just release-no-build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
