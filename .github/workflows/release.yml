@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: astral-sh/setup-uv@v5
+
       - name: Download build artifacts
         uses: dawidd6/action-download-artifact@v9
         with:
@@ -29,5 +31,7 @@ jobs:
           name: build-artifacts
           path: dist/
 
+      # TODO: run smoke tests on the built package here
+
       - name: Upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        run: uv publish --trusted-publishing always
