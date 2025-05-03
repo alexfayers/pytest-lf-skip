@@ -209,8 +209,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # ensure tags are fetched
-          fetch-tags: true
+          fetch-depth: 1
+          fetch-tags: true  # ensure tags are fetched
 
       - uses: astral-sh/setup-uv@v5
         with:
@@ -239,8 +239,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # ensure tags are fetched
-          fetch-tags: true
+          fetch-depth: 1
+          fetch-tags: true  # ensure tags are fetched
 
       - uses: astral-sh/setup-uv@v5
         with:
