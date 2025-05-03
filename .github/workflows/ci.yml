@@ -32,6 +32,11 @@ jobs:
           uv sync --group lint
           uv pip install pip
 
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit|${{ hashFiles('.python-version', '.pre-commit-config.yaml') }}
+
       - run: |
             just lint pre-commit
         env:
@@ -142,12 +147,6 @@ jobs:
           name: coverage-html
           path: htmlcov
 
-      - run: uv run coverage xml
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
   coverage-pr-comment:
     needs: coverage-combine
     runs-on: ubuntu-latest
@@ -209,6 +208,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          fetch-tags: true  # ensure tags are fetched
 
       - uses: astral-sh/setup-uv@v5
         with:
@@ -236,6 +238,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          fetch-tags: true  # ensure tags are fetched
 
       - uses: astral-sh/setup-uv@v5
         with:
@@ -250,8 +255,6 @@ jobs:
           path: dist/
 
       - name: Python Semantic Release
-        run: |
-          git config --system --add safe.directory "*"
-          just release-no-build
+        run: just release-no-build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

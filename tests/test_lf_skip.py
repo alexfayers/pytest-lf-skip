@@ -203,3 +203,9 @@ def test_lfnf_none(
         run_args,
         expected_results,
     )
+
+
+def test_package_version() -> None:
+    from pytest_lf_skip import __version__
+
+    assert __version__ != "0.0.0"
