@@ -240,8 +240,6 @@ jobs:
           path: dist/
 
       - name: Python Semantic Release
-        run: |
-          git config --system --add safe.directory "*"
-          just release-no-build
+        run: just release-no-build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
