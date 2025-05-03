@@ -213,3 +213,7 @@ def test_package_version() -> None:
         "0.0.1",
         "0.1.0",
     ]
+
+    print(__version__)
+
+    assert False
