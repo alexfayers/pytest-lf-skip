@@ -30,6 +30,11 @@ jobs:
           uv sync --group lint
           uv pip install pip
 
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit|${{ hashFiles('.python-version', '.pre-commit-config.yaml') }}
+
       - run: |
             just lint pre-commit
         env:
