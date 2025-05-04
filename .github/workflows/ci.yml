@@ -227,7 +227,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' && needs.build.result == 'success'
     permissions:
-      id-token: write
       contents: write
 
     steps:
@@ -236,8 +235,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true # ensure tags are fetched
 
-      - uses: ./.github/actions/setup
-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -245,6 +242,16 @@ jobs:
           path: dist/
 
       - name: Python Semantic Release
-        run: just release-no-build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          root_options: "-v"
+          build: false
+
+      - name: Add distribution artifacts to GitHub Release Assets
+        uses: python-semantic-release/publish-action@v9
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}
