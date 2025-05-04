@@ -227,16 +227,30 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' && needs.build.result == 'success'
     permissions:
-      id-token: write
       contents: write
 
     steps:
+      # bot integration taken from https://gist.github.com/0xernesto/a8065cce55940e6ccc523664a87ee9bc
+
+      - name: Generate release bot app token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASER_ID }}
+          private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
+
+      - name: Get bot user ID
+        id: bot-user-id
+        run: |
+          echo "user-id=$(gh api "/users/${{ steps.generate_token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+
       - uses: actions/checkout@v4
         with:
+          token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0
           fetch-tags: true # ensure tags are fetched
-
-      - uses: ./.github/actions/setup
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -245,6 +259,17 @@ jobs:
           path: dist/
 
       - name: Python Semantic Release
-        run: just release-no-build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9
+        with:
+          github_token: ${{ steps.generate_token.outputs.token }}
+          git_committer_email: "${{ steps.bot-user-id.outputs.user-id }}+${{ steps.generate_token.outputs.app-slug }}[bot]@users.noreply.github.com"
+          root_options: "-v"
+          build: false
+
+      - name: Add distribution artifacts to GitHub Release Assets
+        uses: python-semantic-release/publish-action@v9
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}
