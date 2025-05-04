@@ -11,7 +11,7 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
-    environment: release
+    environment: pypi-release
 
     permissions:
       id-token: write
