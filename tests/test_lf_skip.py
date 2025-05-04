@@ -208,4 +208,11 @@ def test_lfnf_none(
 def test_package_version() -> None:
     from pytest_lf_skip import __version__
 
-    assert __version__ != "0.0.0"
+    assert all(
+        __version__.startswith(initial_version) is False
+        for initial_version in [
+            "0.0.0",
+            "0.0.1",
+            "0.1.0",
+        ]
+    ), f"Version is {__version__} which indicates that git tags have not been cloned"

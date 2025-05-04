@@ -20,17 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup
         with:
-          python-version: '3.12'
+          install-project: "true"
+          install-project-with: lint
 
-      - uses: extractions/setup-just@v3
-
-      - name: Install dependencies
-        # Installing pip is required for the pre-commit action:
-        run: |
-          uv sync --group lint
-          uv pip install pip
+      # - name: Install pip
+      #   # Installing pip is required for the pre-commit action:
+      #   run: uv pip install pip
 
       - uses: actions/cache@v4
         with:
@@ -53,14 +50,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: astral-sh/setup-uv@v5
+    - uses: ./.github/actions/setup
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: extractions/setup-just@v3
-
-    - name: Install dependencies
-      run: uv sync --group typecheck
+        install-project: "true"
+        install-project-with: typecheck
 
     - name: Run mypy tests
       run: just type-check
@@ -82,15 +76,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true # ensure tags are fetched
 
-    - uses: astral-sh/setup-uv@v5
+    - uses: ./.github/actions/setup
       with:
         python-version: ${{ matrix.python-version }}
-
-    - uses: extractions/setup-just@v3
-
-    - name: Install dependencies
-      run: uv sync
+        install-project: "true"
 
     - run: mkdir coverage
 
@@ -115,9 +108,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup
         with:
-          python-version: '3.12'
+          skip-just: "true"
 
       - name: Get coverage files
         uses: actions/download-artifact@v4
@@ -157,6 +150,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          skip-just: "true"
+          skip-uv: "true"
 
       - name: Download coverage data
         uses: actions/download-artifact@v4
@@ -209,14 +207,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          fetch-tags: true  # ensure tags are fetched
+          fetch-depth: 0
+          fetch-tags: true # ensure tags are fetched
 
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.12"
-
-      - uses: extractions/setup-just@v3
+      - uses: ./.github/actions/setup
 
       - name: Build the package
         run: just build
@@ -239,14 +233,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          fetch-tags: true  # ensure tags are fetched
+          fetch-depth: 0
+          fetch-tags: true # ensure tags are fetched
 
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.12"
-
-      - uses: extractions/setup-just@v3
+      - uses: ./.github/actions/setup
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
