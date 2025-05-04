@@ -64,6 +64,10 @@
   ([#16](https://github.com/alexfayers/pytest-lf-skip/pull/16),
   [`08e34aa`](https://github.com/alexfayers/pytest-lf-skip/commit/08e34aa39b020130e62833541ece47506097da34))
 
+- Update environments for finer grain release control
+  ([#22](https://github.com/alexfayers/pytest-lf-skip/pull/22),
+  [`d5509c1`](https://github.com/alexfayers/pytest-lf-skip/commit/d5509c127560f96d156236258ab230b276c158cb))
+
 - Use `uv publish` for release ([#18](https://github.com/alexfayers/pytest-lf-skip/pull/18),
   [`91db5b7`](https://github.com/alexfayers/pytest-lf-skip/commit/91db5b7381c189c77e81188a1898fe4abe591d40))
 
