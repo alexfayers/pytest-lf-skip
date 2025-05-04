@@ -18,22 +18,12 @@ jobs:
   validate:
     uses: ./.github/workflows/_validate.yml
 
-  check:  # This job just re-exports the check result from the validate job. Needed for backwards compatibility.
-    name: Check
-    needs: validate
-    runs-on: ubuntu-latest
-    if: always()
-
-    outputs:
-      result: ${{ needs.validate.outputs.check-result }}
-
   semantic-release:
     name: GitHub Release
     needs:
       - validate
-      - check
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' && needs.check.outputs.result == 'success' && needs.validate.outputs.new-release == 'true'
+    if: github.event_name != 'pull_request' && needs.validate.outputs.check-result == 'success' && needs.validate.outputs.new-release == 'true'
 
     environment: gh-release
 
