@@ -225,7 +225,7 @@ jobs:
   semantic-release:
     needs: [build]
     runs-on: ubuntu-latest
-    environment: release
+    environment: gh-release
     if: github.event_name != 'pull_request' && needs.build.result == 'success'
     permissions:
       contents: write
