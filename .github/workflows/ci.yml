@@ -225,6 +225,7 @@ jobs:
   semantic-release:
     needs: [build]
     runs-on: ubuntu-latest
+    environment: release
     if: github.event_name != 'pull_request' && needs.build.result == 'success'
     permissions:
       contents: write
@@ -234,7 +235,7 @@ jobs:
 
       - name: Generate release bot app token
         id: generate_token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.RELEASER_ID }}
           private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
