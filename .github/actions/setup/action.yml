@@ -30,12 +30,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        fetch-tags: true # ensure tags are fetched
-
     - name: Setup Python
       if: ${{ inputs.skip-uv != 'true' }}
       uses: astral-sh/setup-uv@v5

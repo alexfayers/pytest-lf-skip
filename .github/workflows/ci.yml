@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Lint
     steps:
+      - uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
         with:
           install-project: "true"
@@ -46,6 +48,8 @@ jobs:
         python-version: ['3.12', '3.13']
 
     steps:
+    - uses: actions/checkout@v4
+
     - uses: ./.github/actions/setup
       with:
         python-version: ${{ matrix.python-version }}
@@ -71,6 +75,11 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true # ensure tags are fetched
+
     - uses: ./.github/actions/setup
       with:
         python-version: ${{ matrix.python-version }}
@@ -97,6 +106,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
         with:
           skip-just: "true"
@@ -138,6 +149,8 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup
         with:
           skip-just: "true"
@@ -192,6 +205,11 @@ jobs:
       UV_PYTHON_PREFERENCE: only-managed
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true # ensure tags are fetched
+
       - uses: ./.github/actions/setup
 
       - name: Build the package
@@ -213,6 +231,11 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true # ensure tags are fetched
+
       - uses: ./.github/actions/setup
 
       - name: Download build artifacts
