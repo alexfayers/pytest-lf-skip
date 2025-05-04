@@ -91,6 +91,9 @@ on:
         description: The result of the check job
         value: ${{ jobs.check.outputs.result }}
 
+
+permissions: {}
+
 env:
   UV_PYTHON_PREFERENCE: only-managed
 
