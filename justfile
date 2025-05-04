@@ -59,7 +59,9 @@ build: _uv clean
 # Release a new version of the package
 release: _uv
     uv run semantic-release version
+    uv run semantic-release publish
 
 # Release a new version of the package without building first
 release-no-build: _uv
     uv run semantic-release version --skip-build
+    uv run semantic-release publish
