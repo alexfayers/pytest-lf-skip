@@ -216,7 +216,3 @@ def test_package_version() -> None:
             "0.1.0",
         ]
     ), f"Version is {__version__} which indicates that git tags have not been cloned"
-
-    print(__version__)
-
-    assert False
