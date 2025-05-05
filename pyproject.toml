@@ -154,6 +154,10 @@ no_implicit_reexport = true
 strict_equality = true
 ignore_missing_imports = false
 
+[[tool.mypy.overrides]]
+module = "scripts.*"
+follow_imports = "silent"
+
 [tool.uv-dynamic-versioning]
 vcs = "git"
 style = "pep440"
