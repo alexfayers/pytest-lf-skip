@@ -1,0 +1,465 @@
+name: Package validation
+# Lint, type-check, and test and build the package.
+# Inspired by https://github.com/python-semantic-release/python-semantic-release/blob/6e3678a948b62b9af7c4639fa7e199bee5fe8a2e/.github/workflows/validate.yml
+
+on:
+  workflow_call:
+    inputs:
+      python-versions:
+        required: false
+        type: string
+        description: The Python versions to run with (as a JSON array). Defaults to calculating the versions based on the `requires-python` value in `pyproject.toml`.
+
+      lint-os:
+        description: The OS version to lint with
+        type: string
+        required: false
+        default: ubuntu-latest
+      lint-command:
+        description: The command to run in the lint step
+        type: string
+        required: false
+        default: just lint pre-commit
+
+      typecheck-os:
+        description: The OS version to type check with
+        type: string
+        required: false
+        default: ubuntu-latest
+      typecheck-command:
+        description: The command to run in the type check step
+        type: string
+        required: false
+        default: just type-check
+
+      test-oses:
+        description: The OS versions to test with (as a JSON array)
+        type: string
+        required: false
+        default: '["ubuntu-latest", "macos-latest", "windows-latest"]'
+
+    outputs:
+      version-min:
+        description: The minimum Python version to use
+        value: ${{ jobs.python-versions.outputs.version-min }}
+      version-max:
+        description: The maximum Python version to use
+        value: ${{ jobs.python-versions.outputs.version-max }}
+      version-matrix:
+        description: The Python versions to use (as a JSON array)
+        value: ${{ jobs.python-versions.outputs.version-matrix }}
+
+      build-artifacts:
+        description: The generated build artifacts
+        value: ${{ jobs.build.outputs.distribution-artifacts }}
+
+      new-release:
+        description: Whether a new release was created
+        value: ${{ jobs.build.outputs.new-release }}
+      new-version:
+        description: The new version of the package
+        value: ${{ jobs.build.outputs.new-version }}
+      new-tag:
+        description: The new tag of the package
+        value: ${{ jobs.build.outputs.new-tag }}
+      new-is-prerelease:
+        description: Whether the new version is a pre-release
+        value: ${{ jobs.build.outputs.new-is-prerelease }}
+
+      check-result:
+        description: The result of the check job
+        value: ${{ jobs.check.outputs.result }}
+
+
+permissions: {}
+
+env:
+  UV_PYTHON_PREFERENCE: only-managed
+  UV_FROZEN: true
+
+jobs:
+  python-versions:
+    name: Setup | Calculate Py versions
+    runs-on: ubuntu-latest
+    if: ${{ inputs.python-versions == '' }}
+
+    outputs:
+      version-min: ${{ inputs.python-versions == '' && steps.version-ranges.outputs.min-version || inputs.python-versions[0] }}
+      version-max: ${{ inputs.python-versions == '' && steps.version-ranges.outputs.max-version || inputs.python-versions[-1] }}
+      version-matrix: ${{ inputs.python-versions == '' && steps.version-matrix.outputs.latest-python-versions || inputs.python-versions }}
+
+    steps:
+      - name: Setup | Checkout repository
+        if: ${{ inputs.python-versions == '' }}
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        if: ${{ inputs.python-versions == '' }}
+        with:
+          skip-just: "true"
+
+      - name: Calculate | Get Py version ranges
+        if: ${{ inputs.python-versions == '' }}
+        id: version-ranges
+        run: uv run scripts/get_supported_py_versions.py --mode gh-action pyproject.toml
+
+      - name: Calculate | Get Py version matrix
+        if: ${{ inputs.python-versions == '' }}
+        id: version-matrix
+        uses: snok/latest-python-versions@v1
+        with:
+          min-version: ${{ steps.version-ranges.outputs.min-version }}
+          max-version: ${{ steps.version-ranges.outputs.max-version }}
+
+  lint:
+    name: "[Py${{ needs.python-versions.outputs.version-min }}] Lint"
+    needs: python-versions
+    runs-on: ${{ inputs.lint-os }}
+
+    steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          python-version: ${{ needs.python-versions.outputs.version-min }}
+          install-project: "true"
+          install-project-with-group: lint
+
+      - name: Setup | Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Lint | Run linters
+        run: ${{ inputs.lint-command }}
+
+  typecheck:
+    name: "[Py${{ matrix.python-version }}] Type-Check"
+    needs: python-versions
+    runs-on: ${{ inputs.typecheck-os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(needs.python-versions.outputs.version-matrix) }}
+
+    steps:
+    - name: Setup | Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: ./.github/actions/setup
+      with:
+        python-version: ${{ matrix.python-version }}
+        install-project: "true"
+        install-project-with-group: typecheck
+
+    - name: Type-Check | Run type-checks
+      run: ${{ inputs.typecheck-command }}
+
+  build:
+    name: Build
+    needs:
+      - python-versions
+      - lint
+      - typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup | Checkout repository with history and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup | Force correct release branch on workflow sha
+        run: |
+          git checkout -B ${{ github.ref_name }}
+
+      - uses: ./.github/actions/setup
+
+      - name: Build | Build next version
+        id: version
+        uses: python-semantic-release/python-semantic-release@v9.21.0
+        with:
+          github_token: ""
+          root_options: "-v"
+          build: true
+          changelog: true
+          commit: false
+          push: false
+          tag: false
+          vcs_release: false
+
+      - name: Debug | Note next version
+        if: ${{ steps.version.outputs.released == 'true'}}
+        run: echo "Next version will be ${{ steps.version.outputs.tag }}"
+
+      - name: Build | Build the package (unversioned)
+        if: ${{ steps.version.outputs.released != 'true'}}
+        run: just build
+
+      - name: Meta | Set output variables
+        id: set-outputs
+        run: |
+          echo "dist-path=dist/" >> $GITHUB_OUTPUT
+          echo "artifact-name=build-artifacts" >> $GITHUB_OUTPUT
+
+      - name: Store artifact | Store build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.set-outputs.outputs.artifact-name }}
+          path: ${{ steps.set-outputs.outputs.dist-path }}
+          retention-days: 30
+
+    outputs:
+      distribution-path: ${{ steps.set-outputs.outputs.dist-path }}
+      distribution-artifacts: ${{ steps.set-outputs.outputs.artifact-name }}
+
+      new-release: ${{ steps.version.outputs.released }}
+      new-version: ${{ steps.version.outputs.version }}
+      new-tag: ${{ steps.version.outputs.tag }}
+      new-is-prerelease: ${{ steps.version.outputs.is_prerelease }}
+
+  test-all-versions:
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All Py versions)"
+    needs:
+      - python-versions
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ${{ fromJson(inputs.test-oses)[0] }}
+        python-version: ${{ fromJson(needs.python-versions.outputs.version-matrix) }}
+
+    env:
+      OS: ${{ matrix.os }}
+      DEPS: yes  # TODO: figure out if this is needed
+
+    steps:
+    - name: Setup | Checkout repository with history and tags
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        filter: tree:0
+
+    - uses: ./.github/actions/setup
+      with:
+        python-version: ${{ matrix.python-version }}
+        install-project: "true"
+        install-project-with-group: test
+
+    - name: Test | Run tests
+      run: |
+        mkdir coverage
+        just test-cov
+      env:
+        COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+        CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
+
+    - name: Store artifact | Store coverage files
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
+        path: coverage
+        include-hidden-files: true
+
+  test-all-oses:
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes)"
+    needs:
+      - python-versions
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJson(inputs.test-oses) }}
+        python-version:
+          - ${{ needs.python-versions.outputs.version-min }}
+
+    env:
+      OS: ${{ matrix.os }}
+      DEPS: yes  # TODO: figure out if this is needed
+
+    steps:
+    - name: Setup | Checkout repository with history and tags
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        filter: tree:0
+
+    - uses: ./.github/actions/setup
+      with:
+        python-version: ${{ matrix.python-version }}
+        install-project: "true"
+        install-project-with-group: test
+
+    - name: Test | Run tests
+      run: |
+        mkdir coverage
+        just test-cov
+      env:
+        COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+        CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
+
+    - name: Store artifact | Store coverage files
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
+        path: coverage
+        include-hidden-files: true
+
+
+  test-build-artifact:
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes | Build artifacts)"
+    needs:
+      - python-versions
+      - build
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJson(inputs.test-oses) }}
+        python-version:
+          - ${{ needs.python-versions.outputs.version-min }}
+
+    env:
+      OS: ${{ matrix.os }}
+      DEPS: yes  # TODO: figure out if this is needed
+
+    steps:
+    - name: Setup | Checkout repository
+      uses: actions/checkout@v4
+
+    - uses: ./.github/actions/setup
+      with:
+        python-version: ${{ matrix.python-version }}
+        install-project: "true"
+        install-project-with-group: test
+
+    - name: Get artifact | Get build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ needs.build.outputs.distribution-artifacts }}
+        path: ${{ needs.build.outputs.distribution-path }}
+
+    - name: Test | Run tests (with build artifacts)
+      run: |
+        mkdir coverage
+        just --set dist-path "${{ needs.build.outputs.distribution-path }}" test-cov-build-artifact
+      env:
+        COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+        CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
+
+    - name: Store artifact | Store coverage files
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-dist-${{ matrix.os }}-${{ matrix.python-version }}
+        path: coverage
+        include-hidden-files: true
+
+  coverage-combine:
+    name: Combine coverage files
+    needs:
+      - test-all-oses
+      - test-all-versions
+      - test-build-artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          skip-just: "true"
+
+      - name: Get artifact | Get coverage files
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          pattern: coverage-*
+          path: coverage
+
+      - name: Process | Combine coverage files
+        run: |
+          uv pip install coverage[toml]
+          ls -la coverage
+          uv run coverage combine coverage
+
+      - name: Store artifact | Store coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data
+          path: .coverage
+          include-hidden-files: true
+
+      - name: Process | Generate HTML coverage report
+        run: |
+          uv run coverage report
+          uv run coverage html --show-contexts --title "coverage for ${{ github.sha }}"
+
+      - name: Store artifact | Store HTML coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: htmlcov
+
+  coverage-comment:
+    name: Make coverage comment
+    needs: coverage-combine
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref_name == github.event.repository.default_branch
+
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      # TODO: is this checkout needed?
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup | Download coverage data
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-data
+
+      - name: Process | Generate coverage comment
+        id: coverage-comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store artifact | Store coverage comment
+        uses: actions/upload-artifact@v4
+        if: steps.coverage-comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+          name: python-coverage-comment-action
+          path: python-coverage-comment-action.txt
+
+  check:  # This job does nothing and is only used for the branch protection
+    name: Check
+    needs:
+      - lint
+      - typecheck
+      - build
+      - test-build-artifact
+      - test-all-versions
+      - test-all-oses
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check | Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        id: all-green
+        with:
+          jobs: ${{ toJSON(needs) }}
+
+    outputs:
+      result: ${{ steps.all-green.outputs.result }}

@@ -1,4 +1,4 @@
-name: Setup environment
+name: Setup | Prepare environment
 description: |
   Clones the repo, including tags. Optionally installs Just, uv, and installs the project using uv.
 
@@ -16,32 +16,36 @@ inputs:
   python-version:
     required: false
     description: The Python version to use.
-    default: "3.12"
 
   install-project:
     required: false
     description: Install the project using uv.
-    default: "true"
+    default: "false"
 
-  install-project-with:
+  install-project-with-group:
     required: false
     description: Additional dependency group to install.
 
 runs:
   using: composite
   steps:
-    - name: Setup Python
+    - name: Setup | Install uv
       if: ${{ inputs.skip-uv != 'true' }}
       uses: astral-sh/setup-uv@v5
       with:
         python-version: ${{ inputs.python-version }}
+
+    - name: Setup | Ensure virtual environment exists
+      if: ${{ inputs.skip-uv != 'true' }}
+      shell: bash
+      run: uv venv --allow-existing
 
     - name: Setup Just
       if: ${{ inputs.skip-just != 'true' }}
       uses: extractions/setup-just@v3
 
     - name: Install project
-      if: ${{ inputs.install-deps == 'true' }}
+      if: ${{ inputs.skip-uv != 'true' && inputs.install-project == 'true' }}
       shell: bash
       run: |
         if [ -n "${{ inputs.install-deps-group }}" ]; then

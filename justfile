@@ -1,3 +1,5 @@
+dist-path := "dist/"
+
 # Run linting/formatting, type checking, and tests
 @_default: format type-check pre-commit test-cov
 
@@ -47,6 +49,15 @@ test: _uv
 # Run tests with coverage
 test-cov: _uv
     uv run pytest -vv --nf --cov=src --cov-report=term-missing
+
+# Run tests with coverage. Mainly for CI.
+test-cov-build-artifact: _uv
+    #!/usr/bin/env bash
+    install_file=$(ls {{dist-path}}/*.whl)
+    uv pip install "$install_file"
+    package_name=$(basename "$install_file" | cut -d'-' -f1)
+    package_path=$(python -c "import pathlib, $package_name; print(str(pathlib.Path($package_name.__file__).resolve().parent))")
+    pytest -vv --nf --cov="$package_path" --cov-report=term-missing
 
 # Run all pre-commit hooks (this calls the `just check` target)
 pre-commit: _pre-commit

@@ -121,7 +121,6 @@ python_files = "test_*.py"
 log_cli_level = "DEBUG"
 addopts = [
     "--color=yes",
-    "-rP",
 ]
 
 [tool.coverage.report]
@@ -154,6 +153,10 @@ warn_unreachable = true
 no_implicit_reexport = true
 strict_equality = true
 ignore_missing_imports = false
+
+[[tool.mypy.overrides]]
+module = "scripts.*"
+follow_imports = "silent"
 
 [tool.uv-dynamic-versioning]
 vcs = "git"
