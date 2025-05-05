@@ -50,6 +50,8 @@ class MetaVersionInfo:
     _latest_eol_version: Version | None = None
     _oldest_supported_version: Version | None = None
 
+    _subversion_min_maxes: dict[tuple[int, int], tuple[Version, Version]] | None = None
+
     @property
     def latest_2_version(self) -> Version:
         """The latest Python 2 version."""
@@ -94,6 +96,17 @@ class MetaVersionInfo:
 
         return self._oldest_supported_version
 
+    @property
+    def subversion_min_maxes(self) -> dict[tuple[int, int], tuple[Version, Version]]:
+        """Get the latest and earliest releases for each subversion."""
+        if self._subversion_min_maxes is None:
+            self._fetch_data()
+
+        if self._subversion_min_maxes is None:
+            error("Failed to get the subversion min maxes.")
+
+        return self._subversion_min_maxes
+
     def _fetch_data(self) -> None:
         current_time = datetime.now(timezone.utc)
 
@@ -102,8 +115,16 @@ class MetaVersionInfo:
 
         data: list[dict[str, str]] = response.json()
 
+        self._subversion_min_maxes = {}
+
         for item in data:
             version = parse(item["latest"])
+
+            self._subversion_min_maxes[(version.major, version.minor)] = (
+                parse(f"{version.major}.{version.minor}"),
+                version,
+            )
+
             if version.major == 2:
                 self._latest_2_version = (
                     version if self._latest_2_version is None else max(self._latest_2_version, version)
@@ -131,38 +152,50 @@ class MetaVersionInfo:
 
 def next_version(version: Version, meta_version_info: MetaVersionInfo) -> Version:
     """Get the next version in the sequence."""
-    return_value = version
+    this_version_release_bounds = meta_version_info.subversion_min_maxes.get((version.major, version.minor), None)
+    if this_version_release_bounds is None:
+        error(f"Version {version} doesn't exist.")
 
-    if len(version.release) >= 3:
-        return_value = parse(f"{version.major}.{version.minor}.{version.micro + 1}")
-    elif len(version.release) >= 2:
-        return_value = parse(f"{version.major}.{version.minor + 1}")
-    elif len(version.release) >= 1:
-        return_value = parse(f"{version.major + 1}")
+    min_version, max_version = this_version_release_bounds
 
-    if return_value.major == 2 and return_value > meta_version_info.latest_2_version:
-        return_value = parse("3")
+    if (next_value := parse(f"{version.major}.{version.minor}.{version.micro + 1}")) > max_version:
+        get_next_version = False
+        for (subversion_major, subversion_minor), (
+            min_version,
+            _,
+        ) in meta_version_info.subversion_min_maxes.items():
+            if get_next_version:
+                return min_version
+            if version.major == subversion_major and version.minor == subversion_minor:
+                get_next_version = True
+                continue
 
-    return return_value
+    # can't find the actual next version, so just use the guessed next version
+    return next_value
 
 
 def previous_version(version: Version, meta_version_info: MetaVersionInfo) -> Version:
     """Get the previous version in the sequence."""
-    return_value = version
-    if len(version.release) >= 3:
-        if version.micro - 1 < 0:
-            return_value = previous_version(parse(f"{version.major}.{version.minor}"), meta_version_info)
-        else:
-            return_value = parse(f"{version.major}.{version.minor}.{version.micro - 1}")
-    elif len(version.release) >= 2:
-        if version.minor - 1 < 0:
-            return_value = previous_version(parse(f"{version.major}"), meta_version_info)
-        else:
-            return_value = parse(f"{version.major}.{version.minor - 1}")
-    elif len(version.release) >= 1 and version.major - 1 >= 0:
-        return_value = parse(f"{version.major - 1}")
+    this_version_release_bounds = meta_version_info.subversion_min_maxes.get((version.major, version.minor), None)
+    if this_version_release_bounds is None:
+        if version.major == 4 and version.minor == 0:
+            return meta_version_info.latest_3_version
+        error(f"Version {version} is not supported for calculation yet.")
+    min_version, max_version = this_version_release_bounds
 
-    return return_value
+    if version.micro == 0:
+        get_previous_version = False
+        for (subversion_major, subversion_minor), (
+            _,
+            max_version,
+        ) in reversed(meta_version_info.subversion_min_maxes.items()):
+            if get_previous_version:
+                return max_version
+            if version.major == subversion_major and version.minor == subversion_minor:
+                get_previous_version = True
+                continue
+
+    return parse(f"{version.major}.{version.minor}.{version.micro - 1}")
 
 
 def parse_args() -> argparse.Namespace:
