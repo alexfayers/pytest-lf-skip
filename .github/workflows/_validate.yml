@@ -75,6 +75,7 @@ permissions: {}
 
 env:
   UV_PYTHON_PREFERENCE: only-managed
+  UV_FROZEN: true
 
 jobs:
   python-versions:
