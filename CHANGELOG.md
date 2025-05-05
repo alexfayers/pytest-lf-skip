@@ -1,12 +1,18 @@
 # CHANGELOG
 
 
-## v0.3.0 (2025-05-04)
+## v0.3.0 (2025-05-05)
 
 ### Chores
 
 - :pushpin: Update uv.lock ([#13](https://github.com/alexfayers/pytest-lf-skip/pull/13),
   [`80e5982`](https://github.com/alexfayers/pytest-lf-skip/commit/80e59823f4502c92a879454a75921ecd901b25b6))
+
+- Add dependabot.yml ([#24](https://github.com/alexfayers/pytest-lf-skip/pull/24),
+  [`30989ce`](https://github.com/alexfayers/pytest-lf-skip/commit/30989cefc30a4213dbfa1600240f8b02d3a60944))
+
+- Update dependabot.yml to use uv ([#31](https://github.com/alexfayers/pytest-lf-skip/pull/31),
+  [`37ba215`](https://github.com/alexfayers/pytest-lf-skip/commit/37ba2150df5602f3b8a8163e767bd0acbc75dda4))
 
 - **just**: Add publish to release steps
   ([#20](https://github.com/alexfayers/pytest-lf-skip/pull/20),
