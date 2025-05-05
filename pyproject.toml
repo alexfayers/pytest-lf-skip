@@ -123,6 +123,12 @@ addopts = [
     "--color=yes",
 ]
 
+[tool.coverage.paths]
+source = [
+    "src/pytest_lf_skip/",
+    ".venv/*/pytest_lf_skip/",
+]
+
 [tool.coverage.report]
 skip_empty = true
 exclude_lines = [
