@@ -1,10 +1,9 @@
 name: CI
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -19,72 +18,3 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-
-  semantic-release:
-    name: GitHub Release
-    needs:
-      - validate
-    runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' && needs.validate.outputs.check-result == 'success' && needs.validate.outputs.new-release == 'true'
-
-    environment: gh-release
-
-    permissions:
-      contents: write
-
-    steps:
-      # bot integration taken from https://gist.github.com/0xernesto/a8065cce55940e6ccc523664a87ee9bc
-
-      - name: Setup | Generate release bot app token
-        id: generate_token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.RELEASER_ID }}
-          private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
-
-      - name: Setup | Get bot user ID
-        id: bot-user-id
-        run: |
-          echo "user-id=$(gh api "/users/${{ steps.generate_token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
-
-      - name: Meta | Set bot variables
-        id: bot-variables
-        run: |
-          echo "bot-email=${{ steps.bot-user-id.outputs.user-id }}+${{ steps.generate_token.outputs.app-slug }}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
-          echo "bot-name=${{ steps.generate_token.outputs.app-slug }}[bot]" >> "$GITHUB_OUTPUT"
-
-      - name: Setup | Checkout repository with history and tags
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: tree:0
-
-      - name: Get artifact | Get build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ needs.validate.outputs.build-artifacts }}
-          path: dist/
-
-      - name: Release | Python Semantic Release
-        id: release
-        uses: python-semantic-release/python-semantic-release@v9
-        with:
-          github_token: ${{ steps.generate_token.outputs.token }}
-          git_committer_email: ${{ steps.bot-variables.outputs.bot-email }}
-          git_committer_name: ${{ steps.bot-variables.outputs.bot-name }}
-          root_options: "-v"
-          build: false
-
-      - name: Release | Add distribution artifacts to GitHub Release Assets
-        uses: python-semantic-release/publish-action@v9
-        if: steps.release.outputs.released == 'true'
-        with:
-          github_token: ${{ steps.generate_token.outputs.token }}
-          tag: ${{ steps.release.outputs.tag }}
-
-    outputs:
-      released: ${{ steps.release.outputs.released || 'false' }}
-      new-version: ${{ steps.release.outputs.version }}
-      new-tag: ${{ steps.release.outputs.tag }}
