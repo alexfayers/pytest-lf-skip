@@ -121,7 +121,6 @@ python_files = "test_*.py"
 log_cli_level = "DEBUG"
 addopts = [
     "--color=yes",
-    "-rP",
 ]
 
 [tool.coverage.report]
