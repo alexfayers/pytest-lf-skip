@@ -10,11 +10,6 @@ on:
         type: string
         description: The Python versions to run with (as a JSON array). Defaults to calculating the versions based on the `requires-python` value in `pyproject.toml`.
 
-      lint-enabled:
-        description: Whether to run the linter
-        type: boolean
-        required: false
-        default: true
       lint-os:
         description: The OS version to lint with
         type: string
@@ -26,11 +21,6 @@ on:
         required: false
         default: just lint pre-commit
 
-      typecheck-enabled:
-        description: Whether to run the type checker
-        type: boolean
-        required: false
-        default: true
       typecheck-os:
         description: The OS version to type check with
         type: string
@@ -42,22 +32,11 @@ on:
         required: false
         default: just type-check
 
-      test-enabled:
-        description: Whether to run the tests
-        type: boolean
-        required: false
-        default: true
       test-oses:
         description: The OS versions to test with (as a JSON array)
         type: string
         required: false
         default: '["ubuntu-latest", "macos-latest", "windows-latest"]'
-
-      build-enabled:
-        description: Whether to build the package
-        type: boolean
-        required: false
-        default: true
 
     outputs:
       version-min:
@@ -135,7 +114,6 @@ jobs:
     name: "[Python ${{ needs.python-versions.outputs.version-min }}] Lint"
     needs: python-versions
     runs-on: ${{ inputs.lint-os }}
-    if: ${{ inputs.lint-enabled == 'true' }}
 
     steps:
       - name: Setup | Checkout repository
@@ -160,7 +138,6 @@ jobs:
     name: "[Python ${{ matrix.python-version }}] Type-Check"
     needs: python-versions
     runs-on: ${{ inputs.typecheck-os }}
-    if: ${{ inputs.typecheck-enabled == 'true' }}
 
     strategy:
       fail-fast: false
@@ -187,7 +164,6 @@ jobs:
       - lint
       - typecheck
     runs-on: ubuntu-latest
-    if: ${{ inputs.build-enabled == 'true' }}
 
     steps:
       - name: Setup | Checkout repository
@@ -244,7 +220,6 @@ jobs:
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
-    if: ${{ inputs.test-enabled == 'true' }}
 
     strategy:
       fail-fast: false
@@ -290,7 +265,6 @@ jobs:
       - python-versions
       - build
     runs-on: ${{ matrix.os }}
-    if: ${{ inputs.test-enabled == 'true' }}
 
     strategy:
       fail-fast: false
