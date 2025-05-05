@@ -15,14 +15,14 @@ repos:
         args: ["--unsafe"]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.13
+    rev: 0.7.2
     hooks:
       - id: uv-sync
       - id: uv-lock
       - id: uv-export
 
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.0.0
+    rev: v4.1.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
