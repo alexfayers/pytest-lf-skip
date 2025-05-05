@@ -166,8 +166,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup | Checkout repository
+      - name: Setup | Checkout repository with history and tags
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup | Force correct release branch on workflow sha
+        run: |
+          git checkout -B ${{ github.ref_name }}
 
       - uses: ./.github/actions/setup
 
@@ -216,7 +223,7 @@ jobs:
       new-is-prerelease: ${{ steps.version.outputs.is_prerelease }}
 
   test-all-versions:
-    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All versions)"
+    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All Python versions)"
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
@@ -224,7 +231,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ fromJson(inputs.test-oses)[0] }}
+        os:
+          - ${{ fromJson(inputs.test-oses)[0] }}
         python-version: ${{ fromJson(needs.python-versions.outputs.version-matrix) }}
 
     env:
@@ -259,8 +267,54 @@ jobs:
         path: coverage
         include-hidden-files: true
 
-  test:
-    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (Build artifacts)"
+  test-all-oses:
+    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All OSes)"
+    needs:
+      - python-versions
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJson(inputs.test-oses) }}
+        python-version:
+          - ${{ needs.python-versions.outputs.version-min }}
+
+    env:
+      OS: ${{ matrix.os }}
+      DEPS: yes  # TODO: figure out if this is needed
+
+    steps:
+    - name: Setup | Checkout repository with history and tags
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        filter: tree:0
+
+    - uses: ./.github/actions/setup
+      with:
+        python-version: ${{ matrix.python-version }}
+        install-project: "true"
+        install-project-with-group: test
+
+    - name: Test | Run tests
+      run: |
+        mkdir coverage
+        just test-cov
+      env:
+        COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
+        CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
+
+    - name: Store artifact | Store coverage files
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
+        path: coverage
+        include-hidden-files: true
+
+
+  test-build-artifact:
+    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All OSes | Build artifacts)"
     needs:
       - python-versions
       - build
@@ -311,8 +365,9 @@ jobs:
   coverage-combine:
     name: Combine coverage files
     needs:
-      - test
+      - test-all-oses
       - test-all-versions
+      - test-build-artifact
     runs-on: ubuntu-latest
 
     steps:
@@ -387,15 +442,15 @@ jobs:
           name: python-coverage-comment-action
           path: python-coverage-comment-action.txt
 
-
   check:  # This job does nothing and is only used for the branch protection
     name: Check
     needs:
-      - build
       - lint
       - typecheck
+      - build
+      - test-build-artifact
       - test-all-versions
-      - test
+      - test-all-oses
     runs-on: ubuntu-latest
     if: always()
 
@@ -405,7 +460,7 @@ jobs:
         id: all-green
         with:
           jobs: ${{ toJSON(needs) }}
-          allowed-skips: ${{ toJSON(needs) }}
+          allowed-skips: build, test
 
     outputs:
       result: ${{ steps.all-green.outputs.result }}
