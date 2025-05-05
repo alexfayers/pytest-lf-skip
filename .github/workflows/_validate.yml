@@ -193,11 +193,10 @@ jobs:
 
       - name: Debug | Note next version
         if: ${{ steps.version.outputs.released == 'true'}}
-        run: |
-          echo "Next version will be: ${{ steps.version.outputs.tag }}"
+        run: echo "Next version will be ${{ steps.version.outputs.tag }}"
 
       - name: Build | Build the package (unversioned)
-        if: ${{ steps.version.outputs.released == 'false'}}
+        if: ${{ steps.version.outputs.released != 'true'}}
         run: just build
 
       - name: Meta | Set output variables
