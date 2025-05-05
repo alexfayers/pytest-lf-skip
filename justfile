@@ -40,7 +40,7 @@ format: _uv
 
 # Run all type checkers against the codebase
 type-check: _uv
-    uv run mypy --install-types --non-interactive
+    uv run mypy
 
 # Run all tests
 test: _uv
