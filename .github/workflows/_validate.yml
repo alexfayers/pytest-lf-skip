@@ -400,7 +400,7 @@ jobs:
       - name: Process | Generate HTML coverage report
         run: |
           uv run coverage report
-          run coverage html --show-contexts --title "coverage for ${{ github.sha }}"
+          uv run coverage html --show-contexts --title "coverage for ${{ github.sha }}"
 
       - name: Store artifact | Store HTML coverage report
         uses: actions/upload-artifact@v4
