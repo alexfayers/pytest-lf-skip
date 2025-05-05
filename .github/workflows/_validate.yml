@@ -389,7 +389,7 @@ jobs:
         run: |
           uv pip install coverage[toml]
           ls -la coverage
-          uv run coverage combine coverage
+          uv run coverage combine --debug=pathmap coverage
 
       - name: Store artifact | Store coverage data
         uses: actions/upload-artifact@v4
