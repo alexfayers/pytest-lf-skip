@@ -17,6 +17,9 @@ env:
 jobs:
   validate:
     uses: ./.github/workflows/_validate.yml
+    permissions:
+      contents: write
+      pull-requests: write
 
   semantic-release:
     name: GitHub Release
