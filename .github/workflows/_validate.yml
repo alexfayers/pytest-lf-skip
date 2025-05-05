@@ -100,7 +100,7 @@ jobs:
       - name: Calculate | Get Py version ranges
         if: ${{ inputs.python-versions == '' }}
         id: version-ranges
-        run: uv run scripts/get-supported-py-versions.py --mode gh-action pyproject.toml
+        run: uv run scripts/get_supported_py_versions.py --mode gh-action pyproject.toml
 
       - name: Calculate | Get Py version matrix
         if: ${{ inputs.python-versions == '' }}
