@@ -7,6 +7,11 @@ import pytest
 if not find_spec("scripts.get_supported_py_versions"):
     pytest.skip("get_supported_py_versions script does not exist.", allow_module_level=True)
 
+try:
+    from scripts import get_supported_py_versions as _get_supported_py_versions  # noqa: F401
+except ImportError as e:
+    pytest.skip(f"couldn't import get_supported_py_versions script ({e}).", allow_module_level=True)
+
 from packaging.version import (
     Version,
     parse,
