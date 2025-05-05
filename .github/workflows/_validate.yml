@@ -78,7 +78,7 @@ env:
 
 jobs:
   python-versions:
-    name: Setup | Calculate project's Python versions
+    name: Setup | Calculate Py versions
     runs-on: ubuntu-latest
     if: ${{ inputs.python-versions == '' }}
 
@@ -97,12 +97,12 @@ jobs:
         with:
           skip-just: "true"
 
-      - name: Calculate | Get project's Python version ranges
+      - name: Calculate | Get Py version ranges
         if: ${{ inputs.python-versions == '' }}
         id: version-ranges
         run: uv run scripts/get-supported-py-versions.py --mode gh-action pyproject.toml
 
-      - name: Calculate | Get project's Python version matrix
+      - name: Calculate | Get Py version matrix
         if: ${{ inputs.python-versions == '' }}
         id: version-matrix
         uses: snok/latest-python-versions@v1
@@ -111,7 +111,7 @@ jobs:
           max-version: ${{ steps.version-ranges.outputs.max-version }}
 
   lint:
-    name: "[Python ${{ needs.python-versions.outputs.version-min }}] Lint"
+    name: "[Py${{ needs.python-versions.outputs.version-min }}] Lint"
     needs: python-versions
     runs-on: ${{ inputs.lint-os }}
 
@@ -135,7 +135,7 @@ jobs:
         run: ${{ inputs.lint-command }}
 
   typecheck:
-    name: "[Python ${{ matrix.python-version }}] Type-Check"
+    name: "[Py${{ matrix.python-version }}] Type-Check"
     needs: python-versions
     runs-on: ${{ inputs.typecheck-os }}
 
@@ -222,7 +222,7 @@ jobs:
       new-is-prerelease: ${{ steps.version.outputs.is_prerelease }}
 
   test-all-versions:
-    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All Python versions)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All Py versions)"
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
@@ -267,7 +267,7 @@ jobs:
         include-hidden-files: true
 
   test-all-oses:
-    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All OSes)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes)"
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
@@ -313,7 +313,7 @@ jobs:
 
 
   test-build-artifact:
-    name: "[${{ matrix.os }} | Python ${{ matrix.python-version }}] Test (All OSes | Build artifacts)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes | Build artifacts)"
     needs:
       - python-versions
       - build
@@ -459,7 +459,6 @@ jobs:
         id: all-green
         with:
           jobs: ${{ toJSON(needs) }}
-          allowed-skips: build, test
 
     outputs:
       result: ${{ steps.all-green.outputs.result }}
