@@ -126,7 +126,7 @@ addopts = [
 [tool.coverage.paths]
 source = [
     "src/pytest_lf_skip/",
-    ".venv/*/pytest_lf_skip/",
+    ".venv/**/pytest_lf_skip/",
 ]
 
 [tool.coverage.report]
