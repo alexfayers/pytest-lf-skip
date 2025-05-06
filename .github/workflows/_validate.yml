@@ -181,16 +181,10 @@ jobs:
 
       - name: Build | Build next version
         id: version
-        uses: python-semantic-release/python-semantic-release@v9.21.0
-        with:
-          github_token: ""
-          root_options: "-v"
-          build: true
-          changelog: true
-          commit: false
-          push: false
-          tag: false
-          vcs_release: false
+        env:
+          GH_TOKEN=""
+        run: |
+          just release-local
 
       - name: Debug | Note next version
         if: ${{ steps.version.outputs.released == 'true'}}
