@@ -85,6 +85,12 @@ lint.extend-ignore = [
     "UP040",   # pyupgrade: Type alias uses `TypeAlias` annotation instead of the `type` keyword
 ]
 
+# Allow more lenient linting rules for scripts
+lint.extend-per-file-ignores."scripts/*" = [
+    "T201", # flake8-print: Print statement found
+]
+
+# Allow more lenient linting rules for tests
 lint.extend-per-file-ignores."tests/*" = [
     "ANN001",  # flake8-annotations: Missing type annotation for function argument
     "D103",    # pydocstyle: Missing docstring in public function
