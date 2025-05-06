@@ -69,10 +69,14 @@ build: _uv clean
 
 # Release a new version of the package
 release: _uv
-    uv run semantic-release version
+    uv run semantic-release -v version
     uv run semantic-release publish
+
+# Locally release a new version of the package (mainly for CI)
+release-local: _uv
+    uv run semantic-release -v version --no-commit --no-push --no-tag --no-vcs-release
 
 # Release a new version of the package without building first
 release-no-build: _uv
-    uv run semantic-release version --skip-build
+    uv run semantic-release -v version --skip-build
     uv run semantic-release publish
