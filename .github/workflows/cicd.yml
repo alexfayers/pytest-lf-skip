@@ -70,13 +70,12 @@ jobs:
 
       - name: Release | Python Semantic Release
         id: release
-        uses: python-semantic-release/python-semantic-release@v9
-        with:
-          github_token: ${{ steps.generate_token.outputs.token }}
-          git_committer_email: ${{ steps.bot-variables.outputs.bot-email }}
-          git_committer_name: ${{ steps.bot-variables.outputs.bot-name }}
-          root_options: "-v"
-          build: false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name ${{ steps.bot-variables.outputs.bot-name }}
+          git config --global user.email ${{ steps.bot-variables.outputs.bot-email }}
+          just release-no-build
 
       - name: Release | Add distribution artifacts to GitHub Release Assets
         uses: python-semantic-release/publish-action@v9
