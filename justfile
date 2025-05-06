@@ -16,9 +16,13 @@ check: lint type-check
 
 # Install the package, development dependencies and pre-commit hooks
 install: _uv _pre-commit
+    #!/usr/bin/env bash
     uv sync --locked
     uv run pre-commit uninstall
     uv run pre-commit install --install-hooks
+
+    source .venv/bin/activate
+    scripts/sync-scripts.sh
 
 clean:
     # Remove all build artifacts
