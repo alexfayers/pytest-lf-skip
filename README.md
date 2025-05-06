@@ -8,7 +8,7 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/pytest-lf-skip)](https://pypistats.org/packages/pytest-lf-skip)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/alexfayers/pytest-lf-skip)](https://github.com/alexfayers/pytest-lf-skip/commits/main/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/alexfayers/pytest-lf-skip)](https://github.com/alexfayers/pytest-lf-skip/commits/main/)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/alexfayers/pytest-lf-skip/latest)
+[![GitHub commits since latest release](https://img.shields.io/github/commits-since/alexfayers/pytest-lf-skip/latest)](https://github.com/alexfayers/pytest-lf-skip/commits/main/)
 
 A pytest plugin which makes `--last-failed` skip instead of deselect tests.
 
