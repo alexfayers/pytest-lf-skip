@@ -11,3 +11,16 @@ updates:
       interval: "weekly"
     reviewers:
       - alexfayers
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - alexfayers
+    commit-message:
+      prefix: "ci"
+    groups: # group all updates into a single PR
+      github-actions:
+        patterns:
+          - "*"
