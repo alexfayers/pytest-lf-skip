@@ -73,8 +73,8 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          git config --global user.name ${{ steps.bot-variables.outputs.bot-name }}
-          git config --global user.email ${{ steps.bot-variables.outputs.bot-email }}
+          git config --local user.name ${{ steps.bot-variables.outputs.bot-name }}
+          git config --local user.email ${{ steps.bot-variables.outputs.bot-email }}
           just release-no-build
 
       - name: Release | Add distribution artifacts to GitHub Release Assets
