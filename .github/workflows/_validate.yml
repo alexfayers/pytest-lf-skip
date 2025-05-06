@@ -182,7 +182,7 @@ jobs:
       - name: Build | Build next version
         id: version
         env:
-          GH_TOKEN=""
+          GH_TOKEN: ""
         run: |
           just release-local
 
