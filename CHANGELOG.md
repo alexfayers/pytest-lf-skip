@@ -1,7 +1,16 @@
 # CHANGELOG
 
 
-## v0.3.0 (2025-05-05)
+## v0.3.0 (2025-05-06)
+
+### Build System
+
+- **just**: Add release-local recipe ([#37](https://github.com/alexfayers/pytest-lf-skip/pull/37),
+  [`020ee22`](https://github.com/alexfayers/pytest-lf-skip/commit/020ee2284a1c55b55af4a26e83f85a8795d1c72f))
+
+- **just**: Add test-cov-build-artifact recipe for use in CI
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
 
 ### Chores
 
@@ -10,6 +19,25 @@
 
 - Add dependabot.yml ([#24](https://github.com/alexfayers/pytest-lf-skip/pull/24),
   [`30989ce`](https://github.com/alexfayers/pytest-lf-skip/commit/30989cefc30a4213dbfa1600240f8b02d3a60944))
+
+- Add mypy overrides for silent import handling in scripts
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Create cicd.yml workflow to prevent PRs from trying to release
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Drop python version in .python-version
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Move UV_FROZEN environment variable to _validate.yml
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Remove pytest -rP flag from addopts ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
 
 - Update dependabot.yml to use uv ([#31](https://github.com/alexfayers/pytest-lf-skip/pull/31),
   [`37ba215`](https://github.com/alexfayers/pytest-lf-skip/commit/37ba2150df5602f3b8a8163e767bd0acbc75dda4))
@@ -21,6 +49,10 @@
 - **just**: Uninstall pre-commit hooks before installing them
   ([#14](https://github.com/alexfayers/pytest-lf-skip/pull/14),
   [`84b1ff9`](https://github.com/alexfayers/pytest-lf-skip/commit/84b1ff9b4732568b0dc7ba5b0217407223b8c604))
+
+- **scripts**: Add get-supported-py-versions script for use in CI
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
 
 ### Continuous Integration
 
@@ -39,6 +71,13 @@
   ([#21](https://github.com/alexfayers/pytest-lf-skip/pull/21),
   [`0eed1c7`](https://github.com/alexfayers/pytest-lf-skip/commit/0eed1c76eeb5fa236e6a91518d426333468b8af5))
 
+- Add more test runners ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Add pull-requests write permission to the validate job
+  ([#33](https://github.com/alexfayers/pytest-lf-skip/pull/33),
+  [`013c0be`](https://github.com/alexfayers/pytest-lf-skip/commit/013c0be58a669fadc407640c747f77c50c5d5c58))
+
 - Adjust CI release workflow to use a dedicated workflow file
   ([#15](https://github.com/alexfayers/pytest-lf-skip/pull/15),
   [`481d1e5`](https://github.com/alexfayers/pytest-lf-skip/commit/481d1e55ff7b1bb6edfcc706dc531d33944532ac))
@@ -55,6 +94,14 @@
   ([#19](https://github.com/alexfayers/pytest-lf-skip/pull/19),
   [`5737b70`](https://github.com/alexfayers/pytest-lf-skip/commit/5737b70bb2a6381c32d0f4c6d3b7c07ff930081e))
 
+- Install just and uv before running release build
+  ([#36](https://github.com/alexfayers/pytest-lf-skip/pull/36),
+  [`e7903dd`](https://github.com/alexfayers/pytest-lf-skip/commit/e7903ddcd4ded8c946ce4c288f876461300e4ddf))
+
+- Move main validation steps into _validate.yml and refactor ci.yml and release.yml due to that
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
 - Remove codecov ([#18](https://github.com/alexfayers/pytest-lf-skip/pull/18),
   [`91db5b7`](https://github.com/alexfayers/pytest-lf-skip/commit/91db5b7381c189c77e81188a1898fe4abe591d40))
 
@@ -70,9 +117,20 @@
   ([#16](https://github.com/alexfayers/pytest-lf-skip/pull/16),
   [`08e34aa`](https://github.com/alexfayers/pytest-lf-skip/commit/08e34aa39b020130e62833541ece47506097da34))
 
+- Tidy setup/action.yml ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
 - Update environments for finer grain release control
   ([#22](https://github.com/alexfayers/pytest-lf-skip/pull/22),
   [`d5509c1`](https://github.com/alexfayers/pytest-lf-skip/commit/d5509c127560f96d156236258ab230b276c158cb))
+
+- Update job names for consistency and clarity in Python version calculations
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
+- Update setup action to ensure virtual environment exists
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
 
 - Use `uv publish` for release ([#18](https://github.com/alexfayers/pytest-lf-skip/pull/18),
   [`91db5b7`](https://github.com/alexfayers/pytest-lf-skip/commit/91db5b7381c189c77e81188a1898fe4abe591d40))
@@ -80,6 +138,20 @@
 - Use alexfayers-py-publisher for releasing
   ([#20](https://github.com/alexfayers/pytest-lf-skip/pull/20),
   [`69d2987`](https://github.com/alexfayers/pytest-lf-skip/commit/69d298779bd17ef5ab5aa43a8bf4d101166863ad))
+
+- Use bot token on cicd release checkout
+  ([#38](https://github.com/alexfayers/pytest-lf-skip/pull/38),
+  [`fbb79e4`](https://github.com/alexfayers/pytest-lf-skip/commit/fbb79e46f70ae601cae8ecb7f55f56b27626e3ea))
+
+- Use just/uv for build step in validate workflow
+  ([#37](https://github.com/alexfayers/pytest-lf-skip/pull/37),
+  [`020ee22`](https://github.com/alexfayers/pytest-lf-skip/commit/020ee2284a1c55b55af4a26e83f85a8795d1c72f))
+
+- Use just/uv for building in release ([#37](https://github.com/alexfayers/pytest-lf-skip/pull/37),
+  [`020ee22`](https://github.com/alexfayers/pytest-lf-skip/commit/020ee2284a1c55b55af4a26e83f85a8795d1c72f))
+
+- Use just/uv for building release ([#37](https://github.com/alexfayers/pytest-lf-skip/pull/37),
+  [`020ee22`](https://github.com/alexfayers/pytest-lf-skip/commit/020ee2284a1c55b55af4a26e83f85a8795d1c72f))
 
 - Use official python-semantic-release actions
   ([#20](https://github.com/alexfayers/pytest-lf-skip/pull/20),
@@ -97,6 +169,10 @@ start using dynamic versioning to calculate the package version number from git 
 - Add package version test ([#18](https://github.com/alexfayers/pytest-lf-skip/pull/18),
   [`91db5b7`](https://github.com/alexfayers/pytest-lf-skip/commit/91db5b7381c189c77e81188a1898fe4abe591d40))
 
+- Add unit tests for version calculation functions in get_supported_py_versions
+  ([#23](https://github.com/alexfayers/pytest-lf-skip/pull/23),
+  [`ca11500`](https://github.com/alexfayers/pytest-lf-skip/commit/ca115005397ee57deb29146fa7bcf75dc15d77c3))
+
 - Adjust test_package_version to include more versions
   ([#19](https://github.com/alexfayers/pytest-lf-skip/pull/19),
   [`5737b70`](https://github.com/alexfayers/pytest-lf-skip/commit/5737b70bb2a6381c32d0f4c6d3b7c07ff930081e))
@@ -104,6 +180,10 @@ start using dynamic versioning to calculate the package version number from git 
 - Enhance version assertion message in test_package_version for clarity on failure
   ([#19](https://github.com/alexfayers/pytest-lf-skip/pull/19),
   [`5737b70`](https://github.com/alexfayers/pytest-lf-skip/commit/5737b70bb2a6381c32d0f4c6d3b7c07ff930081e))
+
+- **cov**: Add path mappings to prevent ci errors during `coverage combine`
+  ([#35](https://github.com/alexfayers/pytest-lf-skip/pull/35),
+  [`c085ad5`](https://github.com/alexfayers/pytest-lf-skip/commit/c085ad5b3337b811156a64a40f3d1701969a12dc))
 
 
 ## v0.2.4 (2025-05-01)
