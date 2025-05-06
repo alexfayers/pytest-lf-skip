@@ -2,7 +2,7 @@
 
 [![PyPI - Version](https://img.shields.io/pypi/v/pytest-lf-skip)](https://pypi.org/project/pytest-lf-skip/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pytest-lf-skip)](https://pypi.org/project/pytest-lf-skip/)
-[![codecov](https://codecov.io/gh/alexfayers/pytest-lf-skip/graph/badge.svg?token=MVADXA06I5)](https://codecov.io/gh/alexfayers/pytest-lf-skip)
+[![Coverage badge](https://raw.githubusercontent.com/alexfayers/pytest-lf-skip/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/alexfayers/pytest-lf-skip/blob/python-coverage-comment-action-data/htmlcov/index.html)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/alexfayers/pytest-lf-skip/ci.yml?branch=main&label=CI)](https://github.com/alexfayers/pytest-lf-skip/actions/workflows/ci.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/alexfayers/pytest-lf-skip/main.svg)](https://results.pre-commit.ci/latest/github/alexfayers/pytest-lf-skip/main)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/pytest-lf-skip)](https://pypistats.org/packages/pytest-lf-skip)
