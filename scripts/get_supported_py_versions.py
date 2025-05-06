@@ -1,14 +1,10 @@
-# ruff: noqa: T201, PLR2004
+# ruff: noqa: PLR2004 (Pylint: magic-value-comparison)
 # /// script
 # requires-python = ">=3.9"
 # dependencies = [
 #     "packaging",
 #     "requests",
 #     "tomli",
-# ]
-#
-# [dependency-groups]
-# typechecking = [
 #     "types-requests",
 # ]
 # ///
