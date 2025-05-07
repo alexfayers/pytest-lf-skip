@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":enablePreCommit",
+    ":label(dependencies)",
+    ":assignAndReview(alexfayers)",
+    ":automergeMinor",
+    ":automergePr",
+    ":maintainLockFilesWeekly",
+    ":semanticCommits",
+    ":semanticCommitScope(deps)",
+    ":prImmediately",
+    "group:linters",
+    "group:testNonMajor"
+  ],
+  "prHourlyLimit": 10,
+  "prConcurrentLimit": 10
+}
