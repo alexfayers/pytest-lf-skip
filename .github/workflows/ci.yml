@@ -25,6 +25,9 @@ jobs:
       pull-requests: write
     if: github.actor == github.repository_owner
     steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup | Configure bot user
         id: setup-bot
         uses: ./.github/actions/setup-bot

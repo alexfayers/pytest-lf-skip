@@ -427,6 +427,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup | Configure bot user
         id: setup-bot
         uses: ./.github/actions/setup-bot
@@ -434,7 +437,7 @@ jobs:
           app-id: ${{ secrets.CI_BOT_ID }}
           private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
 
-      - name: Setup | Checkout repository
+      - name: Setup | Checkout repository as bot user
         uses: actions/checkout@v4
         with:
           token: ${{ steps.setup-bot.outputs.token }}
