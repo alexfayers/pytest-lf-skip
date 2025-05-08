@@ -375,6 +375,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref_name == github.event.repository.default_branch
 
+    environment: ci
+
     permissions:
       pull-requests: write
       contents: write
