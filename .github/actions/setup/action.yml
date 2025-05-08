@@ -31,7 +31,7 @@ runs:
   steps:
     - name: Setup | Install uv
       if: ${{ inputs.skip-uv != 'true' }}
-      uses: astral-sh/setup-uv@v5
+      uses: astral-sh/setup-uv@v6
       with:
         python-version: ${{ inputs.python-version }}
 
