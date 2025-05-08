@@ -357,7 +357,7 @@ jobs:
     - name: Test | Run tests (with build artifacts)
       run: |
         mkdir coverage
-        just --set dist-path "${{ needs.build.outputs.distribution-path }}" test-cov-build-artifact
+        just test-cov-build-artifact "${{ needs.build.outputs.distribution-path }}"
       env:
         COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
