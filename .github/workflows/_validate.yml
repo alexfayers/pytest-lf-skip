@@ -422,6 +422,7 @@ jobs:
       - build
       - test-build-artifact
       - test-all-versions
+      - coverage-comment
     runs-on: ubuntu-latest
     if: always()
 
