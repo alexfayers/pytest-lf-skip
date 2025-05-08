@@ -25,6 +25,14 @@ jobs:
       pull-requests: write
     if: github.actor == github.repository_owner
     steps:
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
       - uses: hmarr/auto-approve-action@v4
         with:
           review-message: "Auto-approved PR by repository owner"
+          github-token: ${{ steps.setup-bot.outputs.token }}
