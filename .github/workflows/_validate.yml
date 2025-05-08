@@ -427,9 +427,17 @@ jobs:
       contents: write
 
     steps:
-      # TODO: is this checkout needed?
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
       - name: Setup | Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ steps.setup-bot.outputs.token }}
 
       - name: Setup | Download coverage data
         uses: actions/download-artifact@v4
@@ -440,7 +448,7 @@ jobs:
         id: coverage-comment
         uses: py-cov-action/python-coverage-comment-action@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.setup-bot.outputs.token }}
 
       - name: Store artifact | Store coverage comment
         uses: actions/upload-artifact@v4
