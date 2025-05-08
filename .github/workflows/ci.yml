@@ -21,7 +21,6 @@ jobs:
 
   auto-approve:
     runs-on: ubuntu-latest
-    environment: ci
     permissions:
       pull-requests: write
     if: github.actor == github.repository_owner
