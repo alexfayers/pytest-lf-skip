@@ -19,7 +19,6 @@ repos:
     hooks:
       - id: uv-sync
       - id: uv-lock
-      - id: uv-export
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.2.0
