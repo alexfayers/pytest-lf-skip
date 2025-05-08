@@ -26,3 +26,10 @@ repos:
       - id: conventional-pre-commit
         stages: [commit-msg]
         args: []
+
+ci:
+  autofix_commit_msg: |
+    chore(pre-commit): auto fixes
+
+    see https://pre-commit.ci for more info
+  autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
