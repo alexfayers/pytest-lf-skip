@@ -181,7 +181,7 @@ commit_message = "chore(release): {version} [skip ci]"
 exclude_commit_patterns = [
     "^:bookmark: Release \\d+\\.\\d+\\.\\d+.+$",
 ]
-no_git_verify = true                                                                                  # bypass pre-commit hooks
+no_git_verify = true # bypass pre-commit hooks
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
