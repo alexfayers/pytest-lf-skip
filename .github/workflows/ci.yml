@@ -37,5 +37,5 @@ jobs:
 
       - uses: hmarr/auto-approve-action@v4
         with:
-          review-message: "Auto-approved PR by repository owner"
+          review-message: "Auto-approved due to PR being created by ${{ github.repository_owner }} (the repository owner)."
           github-token: ${{ steps.setup-bot.outputs.token }}
