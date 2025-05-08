@@ -18,3 +18,13 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+
+  auto-approve:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    if: github.actor == github.repository_owner
+    steps:
+      - uses: hmarr/auto-approve-action@v4
+        with:
+          review-message: "Auto-approved PR by repository owner"
