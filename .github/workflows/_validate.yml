@@ -175,8 +175,6 @@ jobs:
     name: Build
     needs:
       - python-versions
-      - lint
-      - typecheck
     runs-on: ubuntu-latest
 
     steps:
