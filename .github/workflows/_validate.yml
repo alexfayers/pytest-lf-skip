@@ -335,8 +335,6 @@ jobs:
       pull-requests: write
       contents: write
 
-    environment: coverage
-
     steps:
       - name: Setup | Checkout repository
         uses: actions/checkout@v4
