@@ -197,6 +197,7 @@ jobs:
           GH_TOKEN: ""
         run: |
           just release-local
+          git status
 
       - name: Debug | Note next version
         if: ${{ steps.version.outputs.released == 'true'}}
@@ -204,7 +205,9 @@ jobs:
 
       - name: Build | Build the package (unversioned)
         if: ${{ steps.version.outputs.released != 'true'}}
-        run: just build
+        run: |
+          just build
+          git status
 
       - name: Meta | Set output variables
         id: set-outputs
