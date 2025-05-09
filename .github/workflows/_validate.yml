@@ -187,6 +187,7 @@ jobs:
       - name: Setup | Force correct release branch on workflow sha
         run: |
           git checkout -B ${{ github.ref_name }}
+          git status
 
       - uses: ./.github/actions/setup
 
