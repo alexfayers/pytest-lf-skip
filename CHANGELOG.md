@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.3.2 (2025-05-09)
+
+### Bug Fixes
+
+- **ci**: Don't skip ci on release ([#71](https://github.com/alexfayers/pytest-lf-skip/pull/71),
+  [`1d275f7`](https://github.com/alexfayers/pytest-lf-skip/commit/1d275f798121b3ecd85f4fc8bfaa81698ee2c4b2))
+
+
 ## v0.3.1 (2025-05-09)
 
 ### Bug Fixes
