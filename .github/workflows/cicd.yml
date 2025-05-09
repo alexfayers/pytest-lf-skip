@@ -64,8 +64,8 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.setup-bot.outputs.token }}
         run: |
-          git config --local user.name ${{ steps.setup-bot.outputs.bot-name }}
-          git config --local user.email ${{ steps.setup-bot.outputs.bot-email }}
+          git config --local user.name ${{ steps.setup-bot.outputs.name }}
+          git config --local user.email ${{ steps.setup-bot.outputs.email }}
           just release-no-build
 
     outputs:
