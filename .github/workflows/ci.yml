@@ -18,6 +18,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    secrets: inherit
 
   auto-approve:
     runs-on: ubuntu-latest
