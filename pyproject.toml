@@ -177,7 +177,7 @@ bump = true
 
 [tool.semantic_release]
 build_command = "just build"
-commit_message = "chore(release): {version} [skip ci]"
+commit_message = "chore(release): {version}"
 exclude_commit_patterns = [
     "^:bookmark: Release \\d+\\.\\d+\\.\\d+.+$",
 ]
