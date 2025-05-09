@@ -1,6 +1,183 @@
 # CHANGELOG
 
 
+## v0.3.1 (2025-05-09)
+
+### Bug Fixes
+
+- Update publish glob pattern so release artifacts actually get added to github
+  ([#67](https://github.com/alexfayers/pytest-lf-skip/pull/67),
+  [`0ce91a2`](https://github.com/alexfayers/pytest-lf-skip/commit/0ce91a261d0c533607182d2245f6b2ab427c1792))
+
+### Build System
+
+- Update commit message format and exclude old pattern for semantic release
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- **just**: Update test-cov-build-artifact recipe to call pytest with uv
+  ([#61](https://github.com/alexfayers/pytest-lf-skip/pull/61),
+  [`bb85282`](https://github.com/alexfayers/pytest-lf-skip/commit/bb852828a6fa68405182a6081470f6b49eeea79e))
+
+- **just**: Use sync-scripts in `just install`
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+- **pre-commit**: Remove uv-export hook to prevent generation of requirements.txt
+  ([#65](https://github.com/alexfayers/pytest-lf-skip/pull/65),
+  [`49a1cbe`](https://github.com/alexfayers/pytest-lf-skip/commit/49a1cbe6bf1b9a4f67c8ccc5d83333714b7443ec))
+
+- **scripts**: Add conventional commit message validation script
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+- **scripts**: Add script dependency management and commit message validation
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+- **scripts**: Add sync-scripts.sh file to add script deps to venv
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+- **scripts**: Adjust get_supported_py_versions header
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+### Chores
+
+- Add initial commitlint configuration to ignore specific commit messages
+  ([#55](https://github.com/alexfayers/pytest-lf-skip/pull/55),
+  [`f7ae45f`](https://github.com/alexfayers/pytest-lf-skip/commit/f7ae45f85143412e759fb64377cae16dec5511e4))
+
+---------
+
+Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
+
+- Add initial commitlint configuration to ignore specific commit messages
+  ([#55](https://github.com/alexfayers/pytest-lf-skip/pull/55),
+  [`f7ae45f`](https://github.com/alexfayers/pytest-lf-skip/commit/f7ae45f85143412e759fb64377cae16dec5511e4))
+
+- Configure Renovate ([#43](https://github.com/alexfayers/pytest-lf-skip/pull/43),
+  [`bab51fd`](https://github.com/alexfayers/pytest-lf-skip/commit/bab51fd4eab615b145531a98b6950a82819a8273))
+
+- Remove requirements.txt ([#65](https://github.com/alexfayers/pytest-lf-skip/pull/65),
+  [`49a1cbe`](https://github.com/alexfayers/pytest-lf-skip/commit/49a1cbe6bf1b9a4f67c8ccc5d83333714b7443ec))
+
+- **config**: Adjust ruff linting config to allow prints in scripts
+  ([#40](https://github.com/alexfayers/pytest-lf-skip/pull/40),
+  [`852294b`](https://github.com/alexfayers/pytest-lf-skip/commit/852294b7f2e900f715404dfc5b35a74ca06b20e2))
+
+- **deps**: Add renovate.json ([#43](https://github.com/alexfayers/pytest-lf-skip/pull/43),
+  [`bab51fd`](https://github.com/alexfayers/pytest-lf-skip/commit/bab51fd4eab615b145531a98b6950a82819a8273))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Lock file maintenance ([#59](https://github.com/alexfayers/pytest-lf-skip/pull/59),
+  [`cb1bd3d`](https://github.com/alexfayers/pytest-lf-skip/commit/cb1bd3d6b84cffa22c4446994272b04260b86781))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update astral-sh/setup-uv action to v6
+  ([#56](https://github.com/alexfayers/pytest-lf-skip/pull/56),
+  [`c392b2f`](https://github.com/alexfayers/pytest-lf-skip/commit/c392b2f4f3c12e370aa3c949622f4bd59ef7e904))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update pre-commit hook astral-sh/uv-pre-commit to v0.7.2
+  ([#51](https://github.com/alexfayers/pytest-lf-skip/pull/51),
+  [`7c47ed0`](https://github.com/alexfayers/pytest-lf-skip/commit/7c47ed093c8386f37cf04eb78355feb2bade84fe))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update pre-commit hook astral-sh/uv-pre-commit to v0.7.3
+  ([#64](https://github.com/alexfayers/pytest-lf-skip/pull/64),
+  [`bf29c59`](https://github.com/alexfayers/pytest-lf-skip/commit/bf29c59403471d8309844e35766f3e2edda412f7))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update pre-commit hook compilerla/conventional-pre-commit to v4.2.0
+  ([#52](https://github.com/alexfayers/pytest-lf-skip/pull/52),
+  [`8bd492c`](https://github.com/alexfayers/pytest-lf-skip/commit/8bd492c8ce9e625a80e1e136f37cad7fee9521eb))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update python docker tag to v3.13
+  ([#53](https://github.com/alexfayers/pytest-lf-skip/pull/53),
+  [`6122187`](https://github.com/alexfayers/pytest-lf-skip/commit/61221879e1c2c3ce5b42b699b686f059d65d6069))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+### Continuous Integration
+
+- Add commitlint job to validate commit messages
+  ([#41](https://github.com/alexfayers/pytest-lf-skip/pull/41),
+  [`08fa671`](https://github.com/alexfayers/pytest-lf-skip/commit/08fa67184a82ea39f8ad4a4e86e841f8b536b420))
+
+- Add coverage job to `check` action dependencies
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Add GitHub Actions updates to Dependabot configuration
+  ([#42](https://github.com/alexfayers/pytest-lf-skip/pull/42),
+  [`66ebcf7`](https://github.com/alexfayers/pytest-lf-skip/commit/66ebcf70348f52a01e61a0b99fca31f75effec7a))
+
+- Auto-approve PRs by the repository owner
+  ([`8b0a86a`](https://github.com/alexfayers/pytest-lf-skip/commit/8b0a86a75389ada03a56ff715118645d80767191))
+
+- Configure bot user for auto-approval of pull requests (implements #66)
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Implement setup-bot action for GitHub App token generation and configuration
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Inherit secrets for _validate.yml ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Reduce ci time by not waiting for linting + typechecking before build
+  ([#69](https://github.com/alexfayers/pytest-lf-skip/pull/69),
+  [`4e19994`](https://github.com/alexfayers/pytest-lf-skip/commit/4e19994d9b76d04393fb05ef9032277e0026f7ca))
+
+- Remove redundant test-all-oses job from workflow
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Reorder coverage artifact storage in workflow
+  ([#69](https://github.com/alexfayers/pytest-lf-skip/pull/69),
+  [`4e19994`](https://github.com/alexfayers/pytest-lf-skip/commit/4e19994d9b76d04393fb05ef9032277e0026f7ca))
+
+- Simplify coverage jobs ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Use CI bot for most public CI things ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Use ci bot user for coverage-related github actions
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+- Use correct variables in release git config setup
+  ([#70](https://github.com/alexfayers/pytest-lf-skip/pull/70),
+  [`df5ceb9`](https://github.com/alexfayers/pytest-lf-skip/commit/df5ceb99000bdb33d5a02b5cdeae868ee68db202))
+
+- **pre-commit**: Configure pre-commit.ci
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+### Documentation
+
+- **readme**: Update badges for coverage and commits since release
+  ([#39](https://github.com/alexfayers/pytest-lf-skip/pull/39),
+  [`295a1d9`](https://github.com/alexfayers/pytest-lf-skip/commit/295a1d97a8d053ef75ad1bbf2c06042f3fd03b4e))
+
+### Refactoring
+
+- **just**: Move dist-path arg for test-cov-build-artifact recipe into the recipe itself
+  ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
+  [`ed4e6f5`](https://github.com/alexfayers/pytest-lf-skip/commit/ed4e6f54b8c2ac51d82cdfde4e4207f7a88b9be8))
+
+
 ## v0.3.0 (2025-05-06)
 
 ### Build System
