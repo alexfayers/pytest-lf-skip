@@ -1,5 +1,3 @@
-dist-path := "dist/"
-
 # Run linting/formatting, type checking, and tests
 @_default: format type-check pre-commit test-cov
 
@@ -55,7 +53,7 @@ test-cov: _uv
     uv run pytest -vv --nf --cov=src --cov-report=term-missing
 
 # Run tests with coverage. Mainly for CI.
-test-cov-build-artifact: _uv
+test-cov-build-artifact dist-path="dist/": _uv
     #!/usr/bin/env bash
     install_file=$(ls {{dist-path}}/*.whl)
     uv pip install "$install_file"
