@@ -17,10 +17,20 @@ jobs:
       contents: write
       actions: read
     steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
       # DO NOT run actions/checkout here, for security reasons
       # For details, refer to https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
       - name: Post comment
         uses: py-cov-action/python-coverage-comment-action@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.setup-bot.outputs.token }}
           GITHUB_PR_RUN_ID: ${{ github.event.workflow_run.id }}

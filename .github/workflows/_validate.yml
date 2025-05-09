@@ -274,54 +274,8 @@ jobs:
         path: coverage
         include-hidden-files: true
 
-  test-all-oses:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes)"
-    needs:
-      - python-versions
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ${{ fromJson(inputs.test-oses) }}
-        python-version:
-          - ${{ needs.python-versions.outputs.version-min }}
-
-    env:
-      OS: ${{ matrix.os }}
-      DEPS: yes  # TODO: figure out if this is needed
-
-    steps:
-    - name: Setup | Checkout repository with history and tags
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        filter: tree:0
-
-    - uses: ./.github/actions/setup
-      with:
-        python-version: ${{ matrix.python-version }}
-        install-project: "true"
-        install-project-with-group: test
-
-    - name: Test | Run tests
-      run: |
-        mkdir coverage
-        just test-cov
-      env:
-        COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
-        CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
-
-    - name: Store artifact | Store coverage files
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
-        path: coverage
-        include-hidden-files: true
-
-
   test-build-artifact:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All OSes | Build artifacts)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test build artifacts (All OSes)"
     needs:
       - python-versions
       - build
@@ -357,7 +311,7 @@ jobs:
     - name: Test | Run tests (with build artifacts)
       run: |
         mkdir coverage
-        just --set dist-path "${{ needs.build.outputs.distribution-path }}" test-cov-build-artifact
+        just test-cov-build-artifact "${{ needs.build.outputs.distribution-path }}"
       env:
         COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ matrix.python-version }}
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
@@ -365,60 +319,15 @@ jobs:
     - name: Store artifact | Store coverage files
       uses: actions/upload-artifact@v4
       with:
-        name: coverage-dist-${{ matrix.os }}-${{ matrix.python-version }}
+        name: coverage-dist-${{ matrix.os }}-py${{ matrix.python-version }}
         path: coverage
         include-hidden-files: true
 
-  coverage-combine:
-    name: Combine coverage files
+  coverage:
+    name: Process Coverage
     needs:
-      - test-all-oses
       - test-all-versions
       - test-build-artifact
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup | Checkout repository
-        uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup
-        with:
-          skip-just: "true"
-
-      - name: Get artifact | Get coverage files
-        uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-          pattern: coverage-*
-          path: coverage
-
-      - name: Process | Combine coverage files
-        run: |
-          uv pip install coverage[toml]
-          ls -la coverage
-          uv run coverage combine --debug=pathmap coverage
-
-      - name: Store artifact | Store coverage data
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-data
-          path: .coverage
-          include-hidden-files: true
-
-      - name: Process | Generate HTML coverage report
-        run: |
-          uv run coverage report
-          uv run coverage html --show-contexts --title "coverage for ${{ github.sha }}"
-
-      - name: Store artifact | Store HTML coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-html
-          path: htmlcov
-
-  coverage-comment:
-    name: Make coverage comment
-    needs: coverage-combine
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.ref_name == github.event.repository.default_branch
 
@@ -427,20 +336,40 @@ jobs:
       contents: write
 
     steps:
-      # TODO: is this checkout needed?
       - name: Setup | Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup | Download coverage data
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
+      - name: Setup | Checkout repository as bot user
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.setup-bot.outputs.token }}
+
+      - name: Get artifact | Get coverage files
         uses: actions/download-artifact@v4
         with:
-          name: coverage-data
+          merge-multiple: true
+          pattern: coverage-*
+
+      - name: Store artifact | Store merged coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-all
+          path: .coverage
+          include-hidden-files: true
 
       - name: Process | Generate coverage comment
         id: coverage-comment
         uses: py-cov-action/python-coverage-comment-action@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.setup-bot.outputs.token }}
+          MERGE_COVERAGE_FILES: true
 
       - name: Store artifact | Store coverage comment
         uses: actions/upload-artifact@v4
@@ -458,7 +387,7 @@ jobs:
       - build
       - test-build-artifact
       - test-all-versions
-      - test-all-oses
+      - coverage
     runs-on: ubuntu-latest
     if: always()
 

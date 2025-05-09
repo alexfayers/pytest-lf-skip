@@ -18,6 +18,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    secrets: inherit
 
   auto-approve:
     runs-on: ubuntu-latest
@@ -25,6 +26,17 @@ jobs:
       pull-requests: write
     if: github.actor == github.repository_owner
     steps:
+      - name: Setup | Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
       - uses: hmarr/auto-approve-action@v4
         with:
-          review-message: "Auto-approved PR by repository owner"
+          review-message: "Auto-approved due to PR being created by ${{ github.repository_owner }} (the repository owner)."
+          github-token: ${{ steps.setup-bot.outputs.token }}
