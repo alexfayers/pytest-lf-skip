@@ -175,8 +175,6 @@ jobs:
     name: Build
     needs:
       - python-versions
-      - lint
-      - typecheck
     runs-on: ubuntu-latest
 
     steps:
@@ -357,19 +355,19 @@ jobs:
           merge-multiple: true
           pattern: coverage-*
 
-      - name: Store artifact | Store merged coverage data
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-all
-          path: .coverage
-          include-hidden-files: true
-
       - name: Process | Generate coverage comment
         id: coverage-comment
         uses: py-cov-action/python-coverage-comment-action@v3
         with:
           GITHUB_TOKEN: ${{ steps.setup-bot.outputs.token }}
           MERGE_COVERAGE_FILES: true
+
+      - name: Store artifact | Store merged coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-all
+          path: .coverage
+          include-hidden-files: true
 
       - name: Store artifact | Store coverage comment
         uses: actions/upload-artifact@v4
