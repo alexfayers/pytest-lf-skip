@@ -33,7 +33,7 @@ def example_test_file(pytester: pytest.Pytester) -> Path:
 
 
 @pytest.fixture
-def factory_test_plugin(
+def factory_test_plugin(  # pragma: no cover (don't need to test the tests)
     pytester: pytest.Pytester,
     example_test_file: Path,
 ) -> Callable[..., None]:
