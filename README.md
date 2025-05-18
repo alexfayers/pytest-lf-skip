@@ -2,14 +2,14 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/alexfayers/pytest-lf-skip/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                 |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
-|------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| src/pytest\_lf\_skip/\_\_init\_\_.py |        6 |        6 |        0 |        0 |      0% |       1-8 |
-| src/pytest\_lf\_skip/constants.py    |        9 |        9 |        0 |        0 |      0% |      1-21 |
-| src/pytest\_lf\_skip/hooks.py        |       22 |       14 |       10 |        2 |     44% |1-17, 34-39, 46-50 |
-| src/pytest\_lf\_skip/lf\_skip.py     |       48 |       10 |       20 |        0 |     85% |1-19, 59-60 |
-| src/pytest\_lf\_skip/plugin.py       |       14 |        9 |        2 |        0 |     44% |1-12, 36-37 |
-|                            **TOTAL** |   **99** |   **48** |   **32** |    **2** | **60%** |           |
+| Name                                 |    Stmts |     Miss |   Branch |   BrPart |    Cover |   Missing |
+|------------------------------------- | -------: | -------: | -------: | -------: | -------: | --------: |
+| src/pytest\_lf\_skip/\_\_init\_\_.py |        4 |        0 |        0 |        0 |     100% |           |
+| src/pytest\_lf\_skip/constants.py    |        9 |        0 |        0 |        0 |     100% |           |
+| src/pytest\_lf\_skip/hooks.py        |       23 |        0 |       10 |        0 |     100% |           |
+| src/pytest\_lf\_skip/lf\_skip.py     |       55 |        0 |       20 |        0 |     100% |           |
+| src/pytest\_lf\_skip/plugin.py       |       14 |        0 |        2 |        0 |     100% |           |
+|                            **TOTAL** |  **105** |    **0** |   **32** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
