@@ -45,6 +45,7 @@ dev = [
 ]
 
 test = [
+    "coverage>=7.8.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
     "pytest-mock>=3.14",
@@ -137,8 +138,7 @@ source = [
 
 [tool.coverage.report]
 skip_empty = true
-exclude_lines = [
-    "pragma: no cover",
+exclude_also = [
     "if TYPE_CHECKING:",
 ]
 
