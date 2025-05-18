@@ -209,7 +209,7 @@ jobs:
         id: set-outputs
         run: |
           echo "dist-path=dist/" >> $GITHUB_OUTPUT
-          echo "artifact-name=build-artifacts" >> $GITHUB_OUTPUT
+          echo "artifact-name=validate-build-artifacts" >> $GITHUB_OUTPUT
 
       - name: Store artifact | Store build artifacts
         uses: actions/upload-artifact@v4

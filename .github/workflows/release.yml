@@ -33,11 +33,11 @@ jobs:
       - name: Get artifact | Download build artifacts
         uses: dawidd6/action-download-artifact@v9
         with:
-          workflow: ci.yml
+          workflow: cicd.yml
           workflow_conclusion: success
           branch: main
           event: push
-          name: build-artifacts
+          name: release-build-artifacts
           path: dist/
 
       # TODO: run smoke tests on the built package here
