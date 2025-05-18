@@ -13,7 +13,21 @@ env:
   FORCE_COLOR: 1
 
 jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout repository with history and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Validate | Check commit messages
+        uses: wagoid/commitlint-github-action@v6.2.1
+        # uses this config by default: https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional
+
   validate:
+    needs: commitlint
     uses: ./.github/workflows/_validate.yml
     permissions:
       contents: write
@@ -21,6 +35,7 @@ jobs:
     secrets: inherit
 
   auto-approve:
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
