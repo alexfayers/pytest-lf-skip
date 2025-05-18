@@ -15,6 +15,7 @@ env:
 jobs:
   validate:
     uses: ./.github/workflows/_validate.yml
+    if: github.actor != 'alexfayers-auto-cd[bot]'
     permissions:
       contents: write
       pull-requests: write
