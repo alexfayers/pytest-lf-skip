@@ -50,7 +50,8 @@ test: _uv
 
 # Run tests with coverage
 test-cov: _uv
-    uv run pytest -vv --nf --cov=src --cov-report=term-missing
+    uv run coverage run --source=pytest_lf_skip -m pytest -vv --nf -s
+    uv run coverage report --show-missing
 
 # Run tests with coverage. Mainly for CI.
 test-cov-build-artifact dist-path="dist/": _uv
@@ -59,7 +60,8 @@ test-cov-build-artifact dist-path="dist/": _uv
     uv pip install "$install_file"
     package_name=$(basename "$install_file" | cut -d'-' -f1)
     package_path=$(python -c "import pathlib, $package_name; print(str(pathlib.Path($package_name.__file__).resolve().parent))")
-    uv run --no-sync pytest -vv --nf --cov="$package_path" --cov-report=term-missing
+    uv run --no-sync coverage run --source="$package_path" -m pytest -vv --nf
+    uv run --no-sync coverage report --show-missing
 
 # Run all pre-commit hooks (this calls the `just check` target)
 pre-commit: _pre-commit
