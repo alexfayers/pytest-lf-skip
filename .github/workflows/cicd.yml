@@ -53,20 +53,21 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Get artifact | Get build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ needs.validate.outputs.build-artifacts }}
-          path: dist/
-
       - name: Release | Python Semantic Release
         id: release
         env:
           GH_TOKEN: ${{ steps.setup-bot.outputs.token }}
+          GIT_COMMIT_AUTHOR: ${{ steps.setup-bot.outputs.name }} <${{ steps.setup-bot.outputs.email }}>
         run: |
           git config --local user.name ${{ steps.setup-bot.outputs.name }}
           git config --local user.email ${{ steps.setup-bot.outputs.email }}
-          just release-no-build
+          just release
+
+      - name: Store artifact | Store build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-build-artifacts
+          path: dist/
 
     outputs:
       released: ${{ steps.release.outputs.released || 'false' }}

@@ -70,15 +70,17 @@ build: _uv clean
     uv build --sdist --wheel
 
 # Release a new version of the package
-release: _uv
-    uv run semantic-release -v version
-    uv run semantic-release publish
+release: _uv && build gh-publish
+    uv run semantic-release -v version --skip-build
 
 # Locally release a new version of the package (mainly for CI)
 release-local: _uv
     uv run semantic-release -v version --no-commit --no-push --no-tag --no-vcs-release
 
-# Release a new version of the package without building first
-release-no-build: _uv
-    uv run semantic-release -v version --skip-build
+# Make a github release using semantic-release
+gh-publish: _uv
     uv run semantic-release publish
+
+# Publish the package to PyPI using trusted publishing
+pypi-publish: _uv
+    uv publish --trusted-publishing always
