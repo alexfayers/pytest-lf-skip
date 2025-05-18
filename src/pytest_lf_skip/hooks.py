@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import functools
+import logging
 from typing import TYPE_CHECKING, Concatenate, ParamSpec, TypeVar, cast
 import warnings
 
@@ -10,8 +11,10 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
     from os import PathLike
 
-P = ParamSpec("P")
-R = TypeVar("R")
+    P = ParamSpec("P")
+    R = TypeVar("R")
+
+logger = logging.getLogger(__name__)
 
 
 def argparse_parse_hook(
@@ -35,6 +38,7 @@ def argparse_parse_hook(
                     # vscode_pytest plugin has been passed in, so add our args
                     args_.insert(0, "--lf")
                     args_.insert(0, "--lf-skip")
+                    logger.info("Auto-added --lf and --lf-skip to args")
                 else:
                     warnings.warn(
                         f"`{search_arg}` only works when running from vscode.",

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 from _pytest.cacheprovider import LFPlugin
@@ -17,6 +18,8 @@ class LFSkipPlugin(LFPlugin):
     _parent: LFPlugin | None = None
 
     def __init__(self, config: pytest.Config) -> None:
+        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+
         should_be_active = True
 
         if not config.getoption(Constants.lf_skip_parser_options[0]):
@@ -50,10 +53,14 @@ class LFSkipPlugin(LFPlugin):
         if should_be_active:
             # disable the lfplugin-collwrapper plugin so it doesn't filter out known passes
             config.pluginmanager.unregister(name=Constants.lf_collwrapper_plugin_name)
+            self.logger.info("LFSkipPlugin activated - will skip instead of deselect last failed tests")
         else:
             # set the lf arg pack to it's previous state
             setattr(config.option, lf_attr, existing_lf_value)
             self.active = False
+            self.logger.debug(
+                "LFSkipPlugin not active - either --lf-skip not provided, --lf not provided, or LFPlugin not found"
+            )
 
     # wrap the existing pytest_collection_modifyitems on the parent
     @pytest.hookimpl(wrapper=True, tryfirst=True)
@@ -64,8 +71,10 @@ class LFSkipPlugin(LFPlugin):
     ) -> Generator[None]:
         """Mark deselected tests as skipped."""
         if not self._parent or not self._parent.active:
+            self.logger.debug("Parent LFPlugin not active, skipping LFSkipPlugin hook")
             return (yield)
 
+        self.logger.debug("Running LFSkipPlugin collection modification")
         re_add_items = []
 
         # Temporarily disable the pytest_deselected hook so that stats aren't
@@ -75,6 +84,7 @@ class LFSkipPlugin(LFPlugin):
         original_deselect_hook = self._parent.config.hook.pytest_deselected
 
         def pytest_deselected_override(items: list[pytest.Item]) -> None:
+            self.logger.info("Converting %d deselected tests to skipped", len(items))
             for item in items:
                 item.add_marker(pytest.mark.skip(reason=Config.skip_reason))
                 re_add_items.append(item)
