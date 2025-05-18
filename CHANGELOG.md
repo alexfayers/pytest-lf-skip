@@ -1,21 +1,16 @@
 # CHANGELOG
 
 
-## v0.3.2 (2025-05-09)
-
-### Bug Fixes
-
-- **ci**: Don't skip ci on release ([#71](https://github.com/alexfayers/pytest-lf-skip/pull/71),
-  [`1d275f7`](https://github.com/alexfayers/pytest-lf-skip/commit/1d275f798121b3ecd85f4fc8bfaa81698ee2c4b2))
-
-
-## v0.3.1 (2025-05-09)
+## v0.3.1 (2025-05-18)
 
 ### Bug Fixes
 
 - Update publish glob pattern so release artifacts actually get added to github
   ([#67](https://github.com/alexfayers/pytest-lf-skip/pull/67),
   [`0ce91a2`](https://github.com/alexfayers/pytest-lf-skip/commit/0ce91a261d0c533607182d2245f6b2ab427c1792))
+
+- **ci**: Don't skip ci on release ([#71](https://github.com/alexfayers/pytest-lf-skip/pull/71),
+  [`1d275f7`](https://github.com/alexfayers/pytest-lf-skip/commit/1d275f798121b3ecd85f4fc8bfaa81698ee2c4b2))
 
 ### Build System
 
@@ -68,6 +63,10 @@ Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
 - Configure Renovate ([#43](https://github.com/alexfayers/pytest-lf-skip/pull/43),
   [`bab51fd`](https://github.com/alexfayers/pytest-lf-skip/commit/bab51fd4eab615b145531a98b6950a82819a8273))
 
+- Correct formatting of auto-approve review message in CI workflow
+  ([#78](https://github.com/alexfayers/pytest-lf-skip/pull/78),
+  [`0183a80`](https://github.com/alexfayers/pytest-lf-skip/commit/0183a8014b34fd895fb92fd6f8abe67a25248f4b))
+
 - Remove requirements.txt ([#65](https://github.com/alexfayers/pytest-lf-skip/pull/65),
   [`49a1cbe`](https://github.com/alexfayers/pytest-lf-skip/commit/49a1cbe6bf1b9a4f67c8ccc5d83333714b7443ec))
 
@@ -82,6 +81,11 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
 - **deps**: Lock file maintenance ([#59](https://github.com/alexfayers/pytest-lf-skip/pull/59),
   [`cb1bd3d`](https://github.com/alexfayers/pytest-lf-skip/commit/cb1bd3d6b84cffa22c4446994272b04260b86781))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Lock file maintenance ([#73](https://github.com/alexfayers/pytest-lf-skip/pull/73),
+  [`92c3ac7`](https://github.com/alexfayers/pytest-lf-skip/commit/92c3ac704078f6d7ac3dc8230962e99c2d4bbd87))
 
 Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
@@ -100,6 +104,18 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 - **deps**: Update pre-commit hook astral-sh/uv-pre-commit to v0.7.3
   ([#64](https://github.com/alexfayers/pytest-lf-skip/pull/64),
   [`bf29c59`](https://github.com/alexfayers/pytest-lf-skip/commit/bf29c59403471d8309844e35766f3e2edda412f7))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update pre-commit hook astral-sh/uv-pre-commit to v0.7.4
+  ([#74](https://github.com/alexfayers/pytest-lf-skip/pull/74),
+  [`5eab38f`](https://github.com/alexfayers/pytest-lf-skip/commit/5eab38ffc2a36a9a4a83cd253d6fde6310f5d107))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update pre-commit hook astral-sh/uv-pre-commit to v0.7.5
+  ([#75](https://github.com/alexfayers/pytest-lf-skip/pull/75),
+  [`f8abd6b`](https://github.com/alexfayers/pytest-lf-skip/commit/f8abd6ba58c65a47e3ccc4c51c4e237f341f1120))
 
 Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
 
@@ -180,6 +196,10 @@ Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
   [`295a1d9`](https://github.com/alexfayers/pytest-lf-skip/commit/295a1d97a8d053ef75ad1bbf2c06042f3fd03b4e))
 
 ### Refactoring
+
+- Update artifact naming and release process in CI/CD workflows
+  ([#77](https://github.com/alexfayers/pytest-lf-skip/pull/77),
+  [`2b4fbf9`](https://github.com/alexfayers/pytest-lf-skip/commit/2b4fbf9c579ab86d4aea4da0074926d3e0f08db2))
 
 - **just**: Move dist-path arg for test-cov-build-artifact recipe into the recipe itself
   ([#68](https://github.com/alexfayers/pytest-lf-skip/pull/68),
