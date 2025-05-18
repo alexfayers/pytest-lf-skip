@@ -1,6 +1,52 @@
 # CHANGELOG
 
 
+## v0.4.0 (2025-05-18)
+
+### Build System
+
+- **just**: Update coverage commands to use coverage directly
+  ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+### Chores
+
+- Add coverage as a direct test dependency
+  ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+- Ensure validation job only runs for non-cd bot users
+  ([#79](https://github.com/alexfayers/pytest-lf-skip/pull/79),
+  [`32dfcdf`](https://github.com/alexfayers/pytest-lf-skip/commit/32dfcdff45c63ecb1d0dd7f44935c08989f57d8d))
+
+### Code Style
+
+- Update coverage version constraint in test dependencies
+  ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+### Continuous Integration
+
+- Make commitlint validation only run for PRs
+  ([#81](https://github.com/alexfayers/pytest-lf-skip/pull/81),
+  [`4c42117`](https://github.com/alexfayers/pytest-lf-skip/commit/4c421173df8cda2bd575c2bd1f694ff9fc243bd3))
+
+### Features
+
+- Add optional logging to the plugin ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+### Testing
+
+- Add pragma comment to exception handling and factory_test_plugin to improve coverage
+  ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+- Add warnings and logging tests for LF skip functionality
+  ([#80](https://github.com/alexfayers/pytest-lf-skip/pull/80),
+  [`0c5ee73`](https://github.com/alexfayers/pytest-lf-skip/commit/0c5ee73dbc2e8a9556684a95fd80746ad627b763))
+
+
 ## v0.3.1 (2025-05-18)
 
 ### Bug Fixes
