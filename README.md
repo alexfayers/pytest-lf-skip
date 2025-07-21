@@ -12,6 +12,8 @@
 
 A pytest plugin which makes `--last-failed` skip instead of deselect tests.
 
+I made this plugin to resolve a small but annoying-enough issue I that encountered in VS Code where the test panel would not show all of my tests when I had the `--last-failed` option enabled for pytest, due to the previously passed tests being deselected instead of skipped.
+
 ## Installation
 
 You can install `pytest-lf-skip` from pip:
