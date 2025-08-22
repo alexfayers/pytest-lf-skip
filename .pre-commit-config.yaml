@@ -15,7 +15,7 @@ repos:
         args: ["--unsafe"]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.12
+    rev: 0.8.13
     hooks:
       - id: uv-sync
       - id: uv-lock
