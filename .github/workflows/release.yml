@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository with history and tags
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           filter: tree:0

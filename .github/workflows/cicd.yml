@@ -36,7 +36,7 @@ jobs:
     steps:
       # bot integration taken from https://gist.github.com/0xernesto/a8065cce55940e6ccc523664a87ee9bc
       - name: Setup | Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup | Configure bot user
         id: setup-bot
@@ -46,7 +46,7 @@ jobs:
           private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
 
       - name: Setup | Checkout repository as bot user with history and tags
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           filter: tree:0
