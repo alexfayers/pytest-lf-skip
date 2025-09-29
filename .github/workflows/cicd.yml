@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/_validate.yml
     if: github.actor != 'alexfayers-auto-cd[bot]'
     with:
-      fast-mode: false  # Use full validation for main branch
+      fast-mode: false
     permissions:
       contents: write
       pull-requests: write
