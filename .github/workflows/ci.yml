@@ -30,7 +30,7 @@ jobs:
     needs: commitlint
     uses: ./.github/workflows/_validate.yml
     with:
-      fast-mode: true  # Use fast mode for PRs to get under 2 minutes
+      fast-mode: true
     permissions:
       contents: write
       pull-requests: write

@@ -224,7 +224,7 @@ jobs:
       new-is-prerelease: ${{ steps.version.outputs.is_prerelease }}
 
   test-all-versions:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (Critical Py versions)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (Min/Max Py versions)"
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
@@ -271,7 +271,7 @@ jobs:
         include-hidden-files: true
 
   test-build-artifact:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test build artifacts (Primary OS)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test build artifacts"
     needs:
       - python-versions
       - build
