@@ -149,7 +149,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: 
+        python-version:
           - ${{ needs.python-versions.outputs.version-min }}
           - ${{ needs.python-versions.outputs.version-max }}
 
@@ -234,7 +234,7 @@ jobs:
       matrix:
         os:
           - ${{ fromJson(inputs.test-oses)[0] }}
-        python-version: 
+        python-version:
           - ${{ needs.python-versions.outputs.version-min }}
           - ${{ needs.python-versions.outputs.version-max }}
 
@@ -281,7 +281,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: 
+        os:
           - ${{ fromJson(inputs.test-oses)[0] }}  # Only test on primary OS (ubuntu-latest)
         python-version:
           - ${{ needs.python-versions.outputs.version-min }}
