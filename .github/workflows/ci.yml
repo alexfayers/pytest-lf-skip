@@ -29,6 +29,8 @@ jobs:
   validate:
     needs: commitlint
     uses: ./.github/workflows/_validate.yml
+    with:
+      fast-mode: true
     permissions:
       contents: write
       pull-requests: write
