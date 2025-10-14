@@ -327,11 +327,10 @@ jobs:
       - test-all-versions
       - test-build-artifact
     runs-on: ubuntu-latest
-    # Only run coverage when not in fast-mode and on PRs or default branch
+    # Run coverage on PRs (for reviewer visibility) or on default branch (when not in fast-mode)
     if: |
-      !inputs.fast-mode &&
-      (github.event_name == 'pull_request' ||
-       github.ref_name == github.event.repository.default_branch)
+      github.event_name == 'pull_request' ||
+      (!inputs.fast-mode && github.ref_name == github.event.repository.default_branch)
 
     permissions:
       pull-requests: write
