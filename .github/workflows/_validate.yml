@@ -329,8 +329,8 @@ jobs:
     runs-on: ubuntu-latest
     # Only run coverage when not in fast-mode and on PRs or default branch
     if: |
-      !inputs.fast-mode && 
-      (github.event_name == 'pull_request' || 
+      !inputs.fast-mode &&
+      (github.event_name == 'pull_request' ||
        github.ref_name == github.event.repository.default_branch)
 
     permissions:
