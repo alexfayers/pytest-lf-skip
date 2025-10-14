@@ -8,7 +8,7 @@ name = "pytest-lf-skip"
 description = "A pytest plugin which makes `--last-failed` skip instead of deselect tests."
 readme = "README.md"
 authors = [ { name = "Alex Fayers", email = "alex@fayers.com" } ]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Framework :: Pytest",
@@ -22,6 +22,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Testing",
     "Topic :: Utilities",
     "Typing :: Typed",
