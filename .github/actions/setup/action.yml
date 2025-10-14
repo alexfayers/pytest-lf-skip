@@ -34,6 +34,7 @@ runs:
       uses: astral-sh/setup-uv@v6
       with:
         python-version: ${{ inputs.python-version }}
+        enable-cache: true
 
     - name: Setup | Ensure virtual environment exists
       if: ${{ inputs.skip-uv != 'true' }}
@@ -48,8 +49,8 @@ runs:
       if: ${{ inputs.skip-uv != 'true' && inputs.install-project == 'true' }}
       shell: bash
       run: |
-        if [ -n "${{ inputs.install-deps-group }}" ]; then
-          uv sync --group ${{ inputs.install-deps-group }}
+        if [ -n "${{ inputs.install-project-with-group }}" ]; then
+          uv sync --group ${{ inputs.install-project-with-group }}
         else
           uv sync
         fi

@@ -16,6 +16,8 @@ jobs:
   validate:
     uses: ./.github/workflows/_validate.yml
     if: github.actor != 'alexfayers-auto-cd[bot]'
+    with:
+      fast-mode: false
     permissions:
       contents: write
       pull-requests: write

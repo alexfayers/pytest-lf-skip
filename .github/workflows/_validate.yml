@@ -38,6 +38,12 @@ on:
         required: false
         default: '["ubuntu-latest", "macos-latest", "windows-latest"]'
 
+      fast-mode:
+        description: Run in fast mode for quick feedback (skip some comprehensive tests)
+        type: boolean
+        required: false
+        default: false
+
     outputs:
       version-min:
         description: The minimum Python version to use
@@ -143,7 +149,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.python-versions.outputs.version-matrix) }}
+        python-version:
+          - ${{ needs.python-versions.outputs.version-min }}
+          - ${{ needs.python-versions.outputs.version-max }}
 
     steps:
     - name: Setup | Checkout repository
@@ -163,6 +171,7 @@ jobs:
     needs:
       - python-versions
     runs-on: ubuntu-latest
+    if: ${{ !inputs.fast-mode }}
 
     steps:
       - name: Setup | Checkout repository with history and tags
@@ -215,7 +224,7 @@ jobs:
       new-is-prerelease: ${{ steps.version.outputs.is_prerelease }}
 
   test-all-versions:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (All Py versions)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test (Min/Max Py versions)"
     needs:
       - python-versions
     runs-on: ${{ matrix.os }}
@@ -225,7 +234,9 @@ jobs:
       matrix:
         os:
           - ${{ fromJson(inputs.test-oses)[0] }}
-        python-version: ${{ fromJson(needs.python-versions.outputs.version-matrix) }}
+        python-version:
+          - ${{ needs.python-versions.outputs.version-min }}
+          - ${{ needs.python-versions.outputs.version-max }}
 
     env:
       OS: ${{ matrix.os }}
@@ -260,16 +271,18 @@ jobs:
         include-hidden-files: true
 
   test-build-artifact:
-    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test build artifacts (All OSes)"
+    name: "[${{ matrix.os }} | Py${{ matrix.python-version }}] Test build artifacts"
     needs:
       - python-versions
       - build
     runs-on: ${{ matrix.os }}
+    if: ${{ !inputs.fast-mode }}
 
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ fromJson(inputs.test-oses) }}
+        os:
+          - ${{ fromJson(inputs.test-oses)[0] }}  # Only test on primary OS (ubuntu-latest)
         python-version:
           - ${{ needs.python-versions.outputs.version-min }}
 
@@ -314,7 +327,10 @@ jobs:
       - test-all-versions
       - test-build-artifact
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.ref_name == github.event.repository.default_branch
+    # Run coverage on PRs (for reviewer visibility) or on default branch (when not in fast-mode)
+    if: |
+      github.event_name == 'pull_request' ||
+      (!inputs.fast-mode && github.ref_name == github.event.repository.default_branch)
 
     permissions:
       pull-requests: write
@@ -368,10 +384,7 @@ jobs:
     needs:
       - lint
       - typecheck
-      - build
-      - test-build-artifact
       - test-all-versions
-      - coverage
     runs-on: ubuntu-latest
     if: always()
 

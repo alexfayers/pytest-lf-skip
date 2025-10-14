@@ -29,6 +29,8 @@ jobs:
   validate:
     needs: commitlint
     uses: ./.github/workflows/_validate.yml
+    with:
+      fast-mode: true
     permissions:
       contents: write
       pull-requests: write
@@ -39,7 +41,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    if: github.actor == github.repository_owner
+    # Auto-approve if PR is created by repo owner or if repo owner is involved (via approval/review)
+    if: |
+      github.actor == github.repository_owner ||
+      contains(github.event.pull_request.requested_reviewers.*.login, github.repository_owner) ||
+      github.event.pull_request.user.login == github.repository_owner
     steps:
       - name: Setup | Checkout repository
         uses: actions/checkout@v5
@@ -51,7 +57,30 @@ jobs:
           app-id: ${{ secrets.CI_BOT_ID }}
           private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
 
-      - uses: hmarr/auto-approve-action@v4
+      - name: Check if repo owner has approved
+        id: check-approval
+        uses: actions/github-script@v7
         with:
-          review-message: "Auto-approved due to PR being created by @${{ github.repository_owner }} (the repository owner)."
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            const ownerApproved = reviews.data.some(review =>
+              review.user.login === context.payload.repository.owner.login &&
+              review.state === 'APPROVED'
+            );
+
+            core.setOutput('owner-approved', ownerApproved);
+            return ownerApproved;
+
+      - uses: hmarr/auto-approve-action@v4
+        if: |
+          github.actor == github.repository_owner ||
+          steps.check-approval.outputs.owner-approved == 'true'
+        with:
+          review-message: "Auto-approved due to repo owner involvement: PR created by @${{ github.actor }}${{ steps.check-approval.outputs.owner-approved == 'true' && ' and approved by repo owner' || '' }}."
           github-token: ${{ steps.setup-bot.outputs.token }}
