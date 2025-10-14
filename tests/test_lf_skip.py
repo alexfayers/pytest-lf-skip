@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from pytest_lf_skip import __version__
+from pytest_lf_skip.hooks import logger
 from tests._constants import (
     ASSERT_FALSE_TRUE_REPLACE,
     NO_PREVIOUSLY_FAILED_MESSAGE,
@@ -208,8 +210,6 @@ def test_lfnf_none(
 
 
 def test_package_version() -> None:
-    from pytest_lf_skip import __version__
-
     assert all(
         __version__.startswith(initial_version) is False
         for initial_version in [
@@ -243,8 +243,6 @@ def test_no_vscode_warning(
 def test_autoenable_vscode(
     pytester: pytest.Pytester,
 ) -> None:
-    from pytest_lf_skip.hooks import logger
-
     log_stream = StringIO()
     logger.addHandler(logging.StreamHandler(log_stream))
 

@@ -177,7 +177,7 @@ def previous_version(version: Version, meta_version_info: MetaVersionInfo) -> Ve
         if version.major == 4 and version.minor == 0:
             return meta_version_info.latest_3_version
         error(f"Version {version} is not supported for calculation yet.")
-    min_version, max_version = this_version_release_bounds
+    _, max_version = this_version_release_bounds
 
     if version.micro == 0:
         get_previous_version = False
