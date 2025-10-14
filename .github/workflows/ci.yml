@@ -68,12 +68,12 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
-            
-            const ownerApproved = reviews.data.some(review => 
-              review.user.login === context.payload.repository.owner.login && 
+
+            const ownerApproved = reviews.data.some(review =>
+              review.user.login === context.payload.repository.owner.login &&
               review.state === 'APPROVED'
             );
-            
+
             core.setOutput('owner-approved', ownerApproved);
             return ownerApproved;
 
