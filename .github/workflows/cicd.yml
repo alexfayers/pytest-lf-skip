@@ -64,6 +64,9 @@ jobs:
         run: |
           git config --local user.name ${{ steps.setup-bot.outputs.name }}
           git config --local user.email ${{ steps.setup-bot.outputs.email }}
+          # Ensure we're up-to-date with remote main to avoid non-fast-forward push errors
+          git fetch origin main
+          git pull --rebase --autostash origin main
           just release
 
       - name: Store artifact | Store build artifacts
