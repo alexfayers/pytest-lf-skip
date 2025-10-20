@@ -66,7 +66,7 @@ jobs:
           git config --local user.email ${{ steps.setup-bot.outputs.email }}
           # Ensure we're up-to-date with remote main to avoid non-fast-forward push errors
           git fetch origin main
-          git pull --rebase --autostash origin main || git rebase origin/main || true
+          git pull --rebase --autostash origin main
           just release
 
       - name: Store artifact | Store build artifacts
