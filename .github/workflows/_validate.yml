@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Setup | Checkout repository
         if: ${{ inputs.python-versions == '' }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
         if: ${{ inputs.python-versions == '' }}
@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
         with:
@@ -155,7 +155,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - uses: ./.github/actions/setup
       with:
@@ -175,7 +175,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository with history and tags
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           filter: tree:0
@@ -244,7 +244,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository with history and tags
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         filter: tree:0
@@ -292,7 +292,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - uses: ./.github/actions/setup
       with:
@@ -338,7 +338,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup | Configure bot user
         id: setup-bot
@@ -348,7 +348,7 @@ jobs:
           private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
 
       - name: Setup | Checkout repository as bot user
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ steps.setup-bot.outputs.token }}
 
