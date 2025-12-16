@@ -9,7 +9,7 @@
 | src/pytest\_lf\_skip/hooks.py        |       23 |        0 |       10 |        0 |     100% |           |
 | src/pytest\_lf\_skip/lf\_skip.py     |       55 |        0 |       20 |        0 |     100% |           |
 | src/pytest\_lf\_skip/plugin.py       |       14 |        0 |        2 |        0 |     100% |           |
-|                            **TOTAL** |  **105** |    **0** |   **32** |    **0** | **100%** |           |
+| **TOTAL**                            |  **105** |    **0** |   **32** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
