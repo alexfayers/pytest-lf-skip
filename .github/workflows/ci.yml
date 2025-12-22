@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup | Checkout repository with history and tags
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           filter: tree:0
@@ -48,7 +48,7 @@ jobs:
       github.event.pull_request.user.login == github.repository_owner
     steps:
       - name: Setup | Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup | Configure bot user
         id: setup-bot
