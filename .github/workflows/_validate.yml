@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Setup | Checkout repository
         if: ${{ inputs.python-versions == '' }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
         if: ${{ inputs.python-versions == '' }}
@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - uses: ./.github/actions/setup
         with:
@@ -133,7 +133,7 @@ jobs:
           install-project-with-group: lint
 
       - name: Setup | Cache pre-commit
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pre-commit/
           key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
@@ -155,7 +155,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - uses: ./.github/actions/setup
       with:
@@ -175,7 +175,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository with history and tags
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           filter: tree:0
@@ -208,7 +208,7 @@ jobs:
           echo "artifact-name=validate-build-artifacts" >> $GITHUB_OUTPUT
 
       - name: Store artifact | Store build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.set-outputs.outputs.artifact-name }}
           path: ${{ steps.set-outputs.outputs.dist-path }}
@@ -244,7 +244,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository with history and tags
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         filter: tree:0
@@ -264,7 +264,7 @@ jobs:
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
 
     - name: Store artifact | Store coverage files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
         path: coverage
@@ -292,7 +292,7 @@ jobs:
 
     steps:
     - name: Setup | Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - uses: ./.github/actions/setup
       with:
@@ -301,7 +301,7 @@ jobs:
         install-project-with-group: test
 
     - name: Get artifact | Get build artifacts
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v7
       with:
         name: ${{ needs.build.outputs.distribution-artifacts }}
         path: ${{ needs.build.outputs.distribution-path }}
@@ -315,7 +315,7 @@ jobs:
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
 
     - name: Store artifact | Store coverage files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-dist-${{ matrix.os }}-py${{ matrix.python-version }}
         path: coverage
@@ -338,7 +338,7 @@ jobs:
 
     steps:
       - name: Setup | Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup | Configure bot user
         id: setup-bot
@@ -348,12 +348,12 @@ jobs:
           private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
 
       - name: Setup | Checkout repository as bot user
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           token: ${{ steps.setup-bot.outputs.token }}
 
       - name: Get artifact | Get coverage files
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           merge-multiple: true
           pattern: coverage-*
@@ -366,14 +366,14 @@ jobs:
           MERGE_COVERAGE_FILES: true
 
       - name: Store artifact | Store merged coverage data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-all
           path: .coverage
           include-hidden-files: true
 
       - name: Store artifact | Store coverage comment
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: steps.coverage-comment.outputs.COMMENT_FILE_WRITTEN == 'true'
         with:
           name: python-coverage-comment-action
