@@ -70,7 +70,7 @@ jobs:
           just release
 
       - name: Store artifact | Store build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-build-artifacts
           path: dist/
