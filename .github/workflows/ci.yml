@@ -31,6 +31,7 @@ jobs:
     uses: ./.github/workflows/_validate.yml
     with:
       fast-mode: true
+      auto-format: true
     permissions:
       contents: write
       pull-requests: write

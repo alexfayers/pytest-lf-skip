@@ -10,16 +10,27 @@ on:
         type: string
         description: The Python versions to run with (as a JSON array). Defaults to calculating the versions based on the `requires-python` value in `pyproject.toml`.
 
+      auto-format:
+        description: Whether to auto-format code and commit changes (for PRs). If false, only check formatting.
+        type: boolean
+        required: false
+        default: false
+
       lint-os:
         description: The OS version to lint with
         type: string
         required: false
         default: ubuntu-latest
       lint-command:
-        description: The command to run in the lint step
+        description: The command to run in the lint step (when auto-format is false)
         type: string
         required: false
         default: just lint pre-commit
+      format-command:
+        description: The command to run in the format step (when auto-format is true)
+        type: string
+        required: false
+        default: just format
 
       typecheck-os:
         description: The OS version to type check with
@@ -118,13 +129,39 @@ jobs:
           max-version: ${{ steps.version-ranges.outputs.max-version }}
 
   lint:
-    name: "[Py${{ needs.python-versions.outputs.version-min }}] Lint"
+    name: "[Py${{ needs.python-versions.outputs.version-min }}] ${{ inputs.auto-format && 'Format' || 'Lint' }}"
     needs: python-versions
     runs-on: ${{ inputs.lint-os }}
 
     steps:
       - name: Setup | Checkout repository
         uses: actions/checkout@v6
+
+      - name: Meta | Determine format mode
+        id: mode
+        run: |
+          is_fork="${{ github.event.pull_request.head.repo.full_name != github.repository }}"
+          is_bot="${{ github.actor == 'alexfayers-auto-ci[bot]' }}"
+          if [[ "${{ inputs.auto-format }}" == "true" && "$is_fork" != "true" && "$is_bot" != "true" ]]; then
+            echo "should-format=true" >> $GITHUB_OUTPUT
+          else
+            echo "should-format=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup | Configure bot user
+        id: setup-bot
+        uses: ./.github/actions/setup-bot
+        if: ${{ steps.mode.outputs.should-format == 'true' }}
+        with:
+          app-id: ${{ secrets.CI_BOT_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
+      - name: Setup | Checkout repository as bot user
+        uses: actions/checkout@v6
+        if: ${{ steps.mode.outputs.should-format == 'true' }}
+        with:
+          token: ${{ steps.setup-bot.outputs.token }}
+          ref: ${{ github.head_ref }}
 
       - uses: ./.github/actions/setup
         with:
@@ -138,7 +175,33 @@ jobs:
           path: ~/.cache/pre-commit/
           key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
 
+      - name: Format | Run formatters
+        if: ${{ steps.mode.outputs.should-format == 'true' }}
+        run: ${{ inputs.format-command }}
+
+      - name: Format | Check for changes
+        if: ${{ steps.mode.outputs.should-format == 'true' }}
+        id: check-changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Format | Commit and push changes
+        if: ${{ steps.mode.outputs.should-format == 'true' && steps.check-changes.outputs.has-changes == 'true' }}
+        run: |
+          git config --local user.name "${{ steps.setup-bot.outputs.name }}"
+          git config --local user.email "${{ steps.setup-bot.outputs.email }}"
+          git add -A
+          git commit -m "style: auto-format"
+          git push
+          echo "::notice::Formatting changes committed. Failing job as new workflow will be run for the new commit."
+          exit 1
+
       - name: Lint | Run linters
+        if: ${{ steps.mode.outputs.should-format != 'true' }}
         run: ${{ inputs.lint-command }}
 
   typecheck:
