@@ -16,5 +16,8 @@
     "group:testNonMajor"
   ],
   "prHourlyLimit": 10,
-  "prConcurrentLimit": 10
+  "prConcurrentLimit": 10,
+  "gitIgnoredAuthors": [
+    "210926827+alexfayers-auto-ci[bot]@users.noreply.github.com"
+  ]
 }
