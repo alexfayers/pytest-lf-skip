@@ -1,6 +1,5 @@
 [build-system]
 build-backend = "hatchling.build"
-
 requires = [ "hatchling", "uv-dynamic-versioning" ]
 
 [project]
@@ -22,17 +21,16 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Testing",
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
 dynamic = [ "version" ]
 dependencies = [ "pytest>=8.3.5" ]
-
-urls.Changelog = 'https://github.com/alexfayers/pytest-lf-skip/blob/main/CHANGELOG.md'
-urls.Homepage = 'https://github.com/alexfayers/pytest-lf-skip'
-urls.Source = 'https://github.com/alexfayers/pytest-lf-skip'
-
+urls.Changelog = "https://github.com/alexfayers/pytest-lf-skip/blob/main/CHANGELOG.md"
+urls.Homepage = "https://github.com/alexfayers/pytest-lf-skip"
+urls.Source = "https://github.com/alexfayers/pytest-lf-skip"
 entry-points.pytest11.pytest_lf_skip = "pytest_lf_skip.plugin"
 
 [dependency-groups]
@@ -43,7 +41,6 @@ dev = [
     { include-group = "test" },
     { include-group = "typecheck" },
 ]
-
 test = [
     "coverage>=7.8",
     "pytest>=8.3.5",
@@ -57,19 +54,18 @@ lint = [
     "codespell>=2.4.1",
     "ruff>=0.11.5",
 ]
-typecheck = [
-    "mypy>=1.15",
-]
 release = [
     "python-semantic-release>=9.21",
 ]
+typecheck = [
+    "mypy>=1.15",
+]
 
-[tool.hatch.version]
-source = "uv-dynamic-versioning"
+[tool.hatch]
+version.source = "uv-dynamic-versioning"
 
 [tool.ruff]
 line-length = 120
-
 show-fixes = true
 lint.select = [ "ALL" ]
 lint.extend-ignore = [
@@ -85,12 +81,10 @@ lint.extend-ignore = [
     "TD003",   # flake8-todos: Missing issue link for this TODO
     "UP040",   # pyupgrade: Type alias uses `TypeAlias` annotation instead of the `type` keyword
 ]
-
 # Allow more lenient linting rules for scripts
 lint.extend-per-file-ignores."scripts/*" = [
     "T201", # flake8-print: Print statement found
 ]
-
 # Allow more lenient linting rules for tests
 lint.extend-per-file-ignores."tests/*" = [
     "ANN001",  # flake8-annotations: Missing type annotation for function argument
@@ -98,60 +92,51 @@ lint.extend-per-file-ignores."tests/*" = [
     "PLR2004", # Pylint: Magic value used in comparison
     "S101",    # flake8-bandit: Use of `assert` detected
 ]
-
 lint.extend-safe-fixes = [
     "ANN",    # flake8-annotations
-    "EM",     # flake8-errmsg
+    "EM",     #  flake8-errmsg
     "TC001",  # flake8-type-checking: Move application import into a type-checking block
     "TC002",  # flake8-type-checking: Move third-party import into a type-checking block
     "TC003",  # flake8-type-checking: Move standard library import into a type-checking block
     "TC004",  # flake8-type-checking: Move import out of type-checking block. Import is used for more than type hinting.
     "TID252", # flake8-tidy-imports: Replace relative imports from parent modules with absolute imports
 ]
-
 lint.flake8-annotations.allow-star-arg-any = true
-
 lint.isort.combine-as-imports = true
 lint.isort.force-sort-within-sections = true
 lint.isort.force-wrap-aliases = true
 lint.isort.required-imports = [ "from __future__ import annotations" ]
-
 lint.pydocstyle.convention = "google"
 lint.pydocstyle.ignore-var-parameters = true
 
 [tool.pyproject-fmt]
 indent = 4
 
-[tool.pytest.ini_options]
-testpaths = [ "tests" ]
-python_files = "test_*.py"
-log_cli_level = "DEBUG"
-addopts = [
+[tool.pytest]
+ini_options.testpaths = [ "tests" ]
+ini_options.python_files = "test_*.py"
+ini_options.log_cli_level = "DEBUG"
+ini_options.addopts = [
     "--color=yes",
 ]
 
-[tool.coverage.paths]
-source = [
+[tool.coverage]
+run.branch = true
+run.context = "${CONTEXT}"
+run.relative_files = true
+run.source = [ "src" ]
+paths.source = [
     "src/pytest_lf_skip/",
     ".venv/**/pytest_lf_skip/",
 ]
-
-[tool.coverage.report]
-skip_empty = true
-exclude_also = [
+report.exclude_also = [
     "if TYPE_CHECKING:",
 ]
-
-[tool.coverage.run]
-branch = true
-source = [ "src" ]
-relative_files = true
-context = '${CONTEXT}'
+report.skip_empty = true
 
 [tool.mypy]
 files = [ "src", "tests" ]
 python_version = "3.10"
-
 warn_unused_configs = true
 disallow_any_generics = true
 disallow_any_unimported = true
@@ -165,10 +150,7 @@ warn_unreachable = true
 no_implicit_reexport = true
 strict_equality = true
 ignore_missing_imports = false
-
-[[tool.mypy.overrides]]
-module = "scripts.*"
-follow_imports = "silent"
+overrides = [ { module = "scripts.*", follow_imports = "silent" } ]
 
 [tool.uv-dynamic-versioning]
 vcs = "git"
@@ -181,18 +163,10 @@ commit_message = "chore(release): {version}"
 exclude_commit_patterns = [
     "^:bookmark: Release \\d+\\.\\d+\\.\\d+.+$",
 ]
-no_git_verify = true # bypass pre-commit hooks
-
-[tool.semantic_release.branches.main]
-match = "(main|master)"
-
-[tool.semantic_release.commit_parser_options]
-parse_squash_commits = true
-
-[tool.semantic_release.remote]
-name = "origin"
-type = "github"
-
-[tool.semantic_release.publish]
-dist_glob_patterns = [ "dist/*" ]
-upload_to_vcs_release = true
+no_git_verify = true  # bypass pre-commit hooks
+branches.main.match = "(main|master)"
+commit_parser_options.parse_squash_commits = true
+publish.dist_glob_patterns = [ "dist/*" ]
+publish.upload_to_vcs_release = true
+remote.name = "origin"
+remote.type = "github"
