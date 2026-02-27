@@ -271,7 +271,7 @@ jobs:
           echo "artifact-name=validate-build-artifacts" >> $GITHUB_OUTPUT
 
       - name: Store artifact | Store build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.set-outputs.outputs.artifact-name }}
           path: ${{ steps.set-outputs.outputs.dist-path }}
@@ -327,7 +327,7 @@ jobs:
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
 
     - name: Store artifact | Store coverage files
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
         path: coverage
@@ -364,7 +364,7 @@ jobs:
         install-project-with-group: test
 
     - name: Get artifact | Get build artifacts
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: ${{ needs.build.outputs.distribution-artifacts }}
         path: ${{ needs.build.outputs.distribution-path }}
@@ -378,7 +378,7 @@ jobs:
         CONTEXT: ${{ runner.os }}-py${{ matrix.python-version }}
 
     - name: Store artifact | Store coverage files
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: coverage-dist-${{ matrix.os }}-py${{ matrix.python-version }}
         path: coverage
@@ -416,7 +416,7 @@ jobs:
           token: ${{ steps.setup-bot.outputs.token }}
 
       - name: Get artifact | Get coverage files
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           merge-multiple: true
           pattern: coverage-*
@@ -429,14 +429,14 @@ jobs:
           MERGE_COVERAGE_FILES: true
 
       - name: Store artifact | Store merged coverage data
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-all
           path: .coverage
           include-hidden-files: true
 
       - name: Store artifact | Store coverage comment
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: steps.coverage-comment.outputs.COMMENT_FILE_WRITTEN == 'true'
         with:
           name: python-coverage-comment-action
