@@ -129,7 +129,7 @@ jobs:
           max-version: ${{ steps.version-ranges.outputs.max-version }}
 
   lint:
-    name: "[Py${{ needs.python-versions.outputs.version-min }}] ${{ inputs.auto-format && 'Format' || 'Lint' }}"
+    name: "[Py${{ needs.python-versions.outputs.version-min }}] ${{ inputs.auto-format && 'Lint/Format' || 'Lint' }}"
     needs: python-versions
     runs-on: ${{ inputs.lint-os }}
 
@@ -177,6 +177,7 @@ jobs:
 
       - name: Format | Run formatters
         if: ${{ steps.mode.outputs.should-format == 'true' }}
+        continue-on-error: true
         run: ${{ inputs.format-command }}
 
       - name: Format | Check for changes
@@ -201,7 +202,7 @@ jobs:
           exit 1
 
       - name: Lint | Run linters
-        if: ${{ steps.mode.outputs.should-format != 'true' }}
+        if: ${{ steps.mode.outputs.should-format != 'true' || steps.check-changes.outputs.has-changes != 'true' }}
         run: ${{ inputs.lint-command }}
 
   typecheck:
