@@ -114,29 +114,29 @@ indent = 4
 
 [tool.mypy]
 files = [ "src", "tests" ]
+ignore_missing_imports = false
 python_version = "3.10"
-warn_unused_configs = true
-disallow_any_generics = true
 disallow_any_unimported = true
+disallow_any_generics = true
 disallow_untyped_defs = true
 check_untyped_defs = true
-no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unreachable = true
-no_implicit_reexport = true
 strict_equality = true
-ignore_missing_imports = false
+warn_unused_configs = true
 overrides = [ { module = "scripts.*", follow_imports = "silent" } ]
+no_implicit_optional = true
+no_implicit_reexport = true
 
 [tool.pytest]
 ini_options.testpaths = [ "tests" ]
 ini_options.python_files = "test_*.py"
-ini_options.log_cli_level = "DEBUG"
 ini_options.addopts = [
     "--color=yes",
 ]
+ini_options.log_cli_level = "DEBUG"
 
 [tool.coverage]
 run.branch = true
@@ -152,21 +152,21 @@ report.exclude_also = [
 ]
 report.skip_empty = true
 
-[tool.uv-dynamic-versioning]
-vcs = "git"
-style = "pep440"
-bump = true
-
 [tool.semantic_release]
 build_command = "just build"
+no_git_verify = true  # bypass pre-commit hooks
 commit_message = "chore(release): {version}"
 exclude_commit_patterns = [
     "^:bookmark: Release \\d+\\.\\d+\\.\\d+.+$",
 ]
-no_git_verify = true  # bypass pre-commit hooks
-branches.main.match = "(main|master)"
 commit_parser_options.parse_squash_commits = true
+branches.main.match = "(main|master)"
 publish.dist_glob_patterns = [ "dist/*" ]
 publish.upload_to_vcs_release = true
 remote.name = "origin"
 remote.type = "github"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
