@@ -424,7 +424,7 @@ jobs:
 
       - name: Process | Generate coverage comment
         id: coverage-comment
-        uses: py-cov-action/python-coverage-comment-action@v3
+        uses: py-cov-action/python-coverage-comment-action@v4.1
         with:
           GITHUB_TOKEN: ${{ steps.setup-bot.outputs.token }}
           MERGE_COVERAGE_FILES: true
